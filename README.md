@@ -41,3 +41,11 @@ Commands:
 
 # TODO - python3 gait.py commit
 ```
+
+## Development
+
+To lint the code using [Qodana](https://www.jetbrains.com/help/qodana/getting-started.html), run:
+
+```bash
+qodana scan --show-report
+```
