@@ -50,10 +50,16 @@ To lint the code using [Qodana](https://www.jetbrains.com/help/qodana/getting-st
 qodana scan --show-report
 ```
 
+### Documentation
+
+Use the `/docs` folder for documentation.
+
+Docs can be served locally using mkdocs with the following command:
+
+```bash
+mkdocs serve
+```
+
 ## Helpful Resources
 
 [OpenAI Cookbook](https://github.com/openai/openai-cookbook)
-
-## New Section
-
-Some content.

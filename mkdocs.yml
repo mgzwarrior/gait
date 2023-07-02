@@ -1,0 +1,15 @@
+### Site metadata ###
+
+site_name: gAIt Docs
+site_description: Documentation for the gAIt project, a git productivity tool using ChatGPT.
+site_url: https://michaelcurrin.github.io/mkdocs-quickstart/
+
+repo_url: https://github.com/mgzwarrior/gait
+edit_uri: edit/master/docs/docs
+
+### Build settings ###
+
+theme: readthedocs
+
+nav:
+  - README: README.md
