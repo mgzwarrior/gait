@@ -49,3 +49,7 @@ To lint the code using [Qodana](https://www.jetbrains.com/help/qodana/getting-st
 ```bash
 qodana scan --show-report
 ```
+
+## Helpful Resources
+
+[OpenAI Cookbook](https://github.com/openai/openai-cookbook)
