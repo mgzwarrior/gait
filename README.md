@@ -53,3 +53,7 @@ qodana scan --show-report
 ## Helpful Resources
 
 [OpenAI Cookbook](https://github.com/openai/openai-cookbook)
+
+## New Section
+
+Some content.

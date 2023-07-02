@@ -17,7 +17,7 @@ def gait() -> None:
 @gait.command()
 def commit() -> None:
     service = OpenAIService()
-    models = json.loads(service.generate_commit_message(diff=""))
+    models = json.loads(service.generate_commit_message())
     print(json.dumps(models, indent=4))
 
     logger.info(json.dumps(models, indent=4))
