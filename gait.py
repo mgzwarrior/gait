@@ -17,7 +17,10 @@ def gait() -> None:
 @gait.command()
 def commit() -> None:
     service = OpenAIService()
+    #  There is a bug in this line.  The generate_commit_message method returns
+    #  malformed JSON that uses single-quoted strings.  This makes it difficult to play with the results.
     models = json.loads(service.generate_commit_message(diff=""))
+    print(models)
 
     logger.info(json.dumps(models, indent=4))
 
