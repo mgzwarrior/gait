@@ -13,7 +13,6 @@ logging.basicConfig(filename="gait.log", filemode="w", level=logging.DEBUG)
 
 @click.group()
 def gait() -> None:
-    """Gait CLI."""
     return None
 
 
