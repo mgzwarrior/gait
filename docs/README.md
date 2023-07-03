@@ -58,6 +58,16 @@ When new libraries are added using pip, be sure to update the `requirements.txt`
 pip3 freeze > requirements.txt
 ```
 
+### Linting
+
+Lint the entire project by running pylint using the following command:
+
+```bash
+pylint $(git ls-files '*.py')
+```
+
+This is also run automatically as a GitHub Workflow for all pushes to the `main` branch.
+
 ### Documentation
 
 Use the `/docs` folder for documentation.
