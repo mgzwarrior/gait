@@ -24,9 +24,9 @@ def commit() -> None:
 
     try:
         models = json.loads(service.generate_commit_message())
-    except GitException as e:
-        logger.error(e)
-        raise click.ClickException(e)
+    except GitException as exc:
+        logger.error(exc)
+        raise click.ClickException(str(exc))
     else:
         print(json.dumps(models, indent=4))
 

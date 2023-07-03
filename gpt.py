@@ -4,7 +4,7 @@ import subprocess
 
 import openai
 
-from exceptions import GitException
+from exceptions import GitException, OpenAIException
 
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md
@@ -31,28 +31,30 @@ class OpenAIService:
 
     def generate_commit_message(self) -> str:
         """Generate a commit message."""
-        diff_file = open("diff.txt", "w", encoding="utf-8")
         cmd = ['git --no-pager diff']
 
-        try:
-            subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
-        except subprocess.CalledProcessError as e:
-            raise GitException(e)
+        with open("diff.txt", "w", encoding="utf-8") as diff_file:
+            try:
+                subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
+            except subprocess.CalledProcessError as exc:
+                raise GitException(exc) from exc
 
-        with open("diff.txt", "r") as diff:
-            #  To use real git diff
-            response = openai.Completion.create(
-                model="text-davinci-003",
-                prompt=self.generate_prompt(str(diff.read())),
-                temperature=0.5
-            )
-
-            #  To use sample diff
-            # response = openai.Completion.create(
-            #     model="text-davinci-003",
-            #     prompt=self.generate_prompt(SAMPLE_DIFF),
-            #     temperature=0.5
-            # )
+        with open("diff.txt", "r", encoding="utf-8") as diff:
+            try:
+                #  To use real git diff
+                response = openai.Completion.create(
+                    model="text-davinci-003",
+                    prompt=self.generate_prompt(str(diff.read())),
+                    temperature=0.5
+                )
+                #  To use sample diff
+                # response = openai.Completion.create(
+                #     model="text-davinci-003",
+                #     prompt=self.generate_prompt(SAMPLE_DIFF),
+                #     temperature=0.5
+                # )
+            except openai.error.OpenAIError as exc:
+                raise OpenAIException(exc) from exc
 
         return str(response)
 
