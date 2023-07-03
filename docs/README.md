@@ -2,8 +2,10 @@
 
 A git AI productivity tool.
 
-![pylint](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml/badge.svg)
+[![Pylint](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml/badge.svg)](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml)
+[![update-gh-pages-branch](https://github.com/mgzwarrior/gait/actions/workflows/mkdocs.yml/badge.svg)](https://github.com/mgzwarrior/gait/actions/workflows/mkdocs.yml)
 [![pages-build-deployment](https://github.com/mgzwarrior/gait/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mgzwarrior/gait/actions/workflows/pages/pages-build-deployment)
+[![CodeQL](https://github.com/mgzwarrior/gait/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/mgzwarrior/gait/actions/workflows/github-code-scanning/codeql)
 
 ## Installation
 
