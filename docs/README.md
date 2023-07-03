@@ -3,6 +3,7 @@
 A git AI productivity tool.
 
 ![pylint](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml/badge.svg)
+[![pages-build-deployment](https://github.com/mgzwarrior/gait/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mgzwarrior/gait/actions/workflows/pages/pages-build-deployment)
 
 ## Installation
 
