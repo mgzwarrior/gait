@@ -1,3 +1,4 @@
+"""ChatGPT module, contains OpenAIService class."""
 import os
 import subprocess
 
@@ -22,10 +23,12 @@ index 9f9c653..4dd9f3a 100644
 
 
 class OpenAIService(object):
+    """OpenAI Service."""
     def __init__(self):
         self.__set_openai_api_key()
 
     def generate_commit_message(self) -> str:
+
         diff_file = open("diff.txt", "w")
         cmd = ['git --no-pager diff']
         subprocess.run(cmd, stdout=diff_file, shell=True)
