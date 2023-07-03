@@ -27,10 +27,10 @@ def commit() -> None:
     except GitException as exc:
         logger.error(exc)
         raise click.ClickException(str(exc))
-    else:
-        print(json.dumps(models, indent=4))
 
-        logger.info(json.dumps(models, indent=4))
+    print(json.dumps(models, indent=4))
+
+    logger.info(json.dumps(models, indent=4))
 
 
 if __name__ == "__main__":
