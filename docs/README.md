@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./img/logo_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./img/logo_light.png">
+  <img alt="Shows the gait logo in light mode and dark mode.">
+</picture>
+
 # gAIt
 
 A git AI productivity tool.
