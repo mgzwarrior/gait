@@ -2,6 +2,8 @@
 
 A git AI productivity tool.
 
+![pylint](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml/badge.svg)
+
 ## Installation
 
 ```bash
