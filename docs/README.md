@@ -3,8 +3,6 @@
   <img alt="Shows the gait logo in light mode and dark mode." src="./img/logo_light.png" width=50% height=50%>
 </picture>
 
-# gAIt
-
 A git AI productivity tool.
 
 [![Pylint](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml/badge.svg)](https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml)
