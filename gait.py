@@ -18,7 +18,8 @@ def gait() -> None:
 
 
 @gait.command()
-def commit() -> None:
+@click.option("--verbose", "-v", help="Verbose mode.", is_flag=True)
+def commit(verbose) -> None:
     """Generate a commit message."""
     service = OpenAIService()
 
@@ -28,7 +29,30 @@ def commit() -> None:
         logger.error(exc)
         raise click.ClickException(str(exc))
 
-    print(json.dumps(models, indent=4))
+    if verbose:
+        print("ChatGPT full response:")
+        print(json.dumps(models, indent=4))
+
+    message = json.dumps(models["choices"][0]["text"], indent=4)
+
+    print(f"ChatGPT generated the following commit message: '{message}'")
+
+    print("Would you like to commit this message? [y/n/edit]")
+
+    choice = input()
+
+    if choice == "y":
+        print("Committing...")
+        # Disabled for testing
+        # service.commit(message)
+    elif choice == "edit":
+        print("Please enter your commit message below:")
+        user_commit_message = input()
+        print("Committing...")
+        # Disabled for testing
+        # service.commit(user_commit_message)
+    else:
+        print("Aborting...")
 
     logger.info(json.dumps(models, indent=4))
 

@@ -29,6 +29,15 @@ class OpenAIService:
     def __init__(self):
         self.__set_openai_api_key()
 
+    def commit(self, message: str) -> None:
+        """Commit a message."""
+        cmd = ['git commit -m', message]
+
+        try:
+            subprocess.run(cmd, shell=True, check=True)
+        except subprocess.CalledProcessError as exc:
+            raise GitException(exc) from exc
+
     def generate_commit_message(self) -> str:
         """Generate a commit message."""
         cmd = ['git --no-pager diff']
