@@ -1,6 +1,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./img/logo_dark.png">
-  <img alt="Shows the gait logo in light mode and dark mode." src="./img/logo_light.png">
+  <img alt="Shows the gait logo in light mode and dark mode." src="./img/logo_light.png" width="900" 
+     height="450">
 </picture>
 
 # gAIt
