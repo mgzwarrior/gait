@@ -4,6 +4,8 @@ import subprocess
 
 import openai
 
+from exceptions import GitException
+
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md
 index 9f9c653..4dd9f3a 100644
@@ -17,21 +19,25 @@ index 9f9c653..4dd9f3a 100644
 -## New Section
 -
 -Some content.
-\ No newline at end of file
+\\ No newline at end of file
 
 """
 
 
-class OpenAIService(object):
+class OpenAIService:
     """OpenAI Service."""
     def __init__(self):
         self.__set_openai_api_key()
 
     def generate_commit_message(self) -> str:
-
-        diff_file = open("diff.txt", "w")
+        """Generate a commit message."""
+        diff_file = open("diff.txt", "w", encoding="utf-8")
         cmd = ['git --no-pager diff']
-        subprocess.run(cmd, stdout=diff_file, shell=True)
+
+        try:
+            subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
+        except subprocess.CalledProcessError as e:
+            raise GitException(e)
 
         with open("diff.txt", "r") as diff:
             #  To use real git diff
@@ -52,10 +58,12 @@ class OpenAIService(object):
 
     @staticmethod
     def generate_prompt(diff: str) -> str:
-        return """Write a git commit message based on the following diff within the <<< >>> below.
+        """Generate a prompt for the OpenAI API."""
+        return f"""Write a git commit message based on the following diff within the <<< >>> below.
         
-<<<{}>>>""".format(diff)
+<<<{diff}>>>"""
 
     @staticmethod
     def __set_openai_api_key() -> None:
+        """Set the OpenAI API key."""
         openai.api_key = os.getenv("OPENAI_API_KEY")

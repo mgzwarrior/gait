@@ -4,6 +4,7 @@ import logging
 
 import click
 
+from exceptions import GitException
 from gpt import OpenAIService
 
 logger = logging.getLogger("gait")
@@ -20,10 +21,16 @@ def gait() -> None:
 def commit() -> None:
     """Generate a commit message."""
     service = OpenAIService()
-    models = json.loads(service.generate_commit_message())
-    print(json.dumps(models, indent=4))
 
-    logger.info(json.dumps(models, indent=4))
+    try:
+        models = json.loads(service.generate_commit_message())
+    except GitException as e:
+        logger.error(e)
+        raise click.ClickException(e)
+    else:
+        print(json.dumps(models, indent=4))
+
+        logger.info(json.dumps(models, indent=4))
 
 
 if __name__ == "__main__":
