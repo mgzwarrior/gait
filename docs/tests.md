@@ -13,3 +13,9 @@ This page is a dumping ground for any tests that you run and their results.  Ple
 ![Test Run 2](img/test_2.png)
 
 *Another example of a real git diff and the commit message written by ChatGPT.*
+
+## Test Run 3
+
+![Test Run 3](img/test_3.png)
+
+*Subtle changes are not well-recognized.  Need to tweak the propmpt or train the model somehow.*

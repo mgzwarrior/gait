@@ -82,6 +82,6 @@ mkdocs serve
 
 ## Helpful Resources
 
-[OpenAI Cookbook](https://github.com/openai/openai-cookbook) - a GitHub repo containing a number of userful tips for using the OpenAI API.
-[OpenAI Tokenizer](https://platform.openai.com/tokenizer) - a utility from OpenAI to tokenize a given text prompt.
-TODO [click-man](https://github.com/click-contrib/click-man) - a library to create man pages for click applications.
+- [OpenAI Cookbook](https://github.com/openai/openai-cookbook) - a GitHub repo containing a number of userful tips for using the OpenAI API.
+- [OpenAI Tokenizer](https://platform.openai.com/tokenizer) - a utility from OpenAI to tokenize a given text prompt.
+- :construction: [click-man](https://github.com/click-contrib/click-man) - a library to create man pages for click applications.
