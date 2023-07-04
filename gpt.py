@@ -54,6 +54,11 @@ class OpenAIService:
         return str(response)
 
     def __generate_diff_summary(self, summary_batch_size: int) -> str:
+        """
+        Based on the approach described in GPT best practices below.
+
+        https://platform.openai.com/docs/guides/gpt-best-practices/strategy-split-complex-tasks-into-simpler-subtasks
+        """
         diff = self.__get_current_diff()
 
         encoding = tiktoken.encoding_for_model(self.model)
