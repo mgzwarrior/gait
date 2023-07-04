@@ -17,13 +17,12 @@ class GitService:
             raise GitException(exc) from exc
 
     @staticmethod
-    def diff() -> str:
+    def diff() -> None:
         """Get diff."""
         cmd = ['git --no-pager diff']
 
         try:
-            result = subprocess.run(cmd, stdout=subprocess.PIPE, shell=True, check=True)
+            with open("diff.txt", "w", encoding="utf-8") as diff_file:
+                subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
         except subprocess.CalledProcessError as exc:
             raise GitException(exc) from exc
-
-        return str(result.stdout)
