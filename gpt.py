@@ -39,7 +39,7 @@ class OpenAIService:
         try:
             response = openai.Completion.create(
                 model=self.model,
-                prompt=self.__generate_prompt(OpenAIService.__get_current_diff()),
+                prompt=self.__generate_prompt(self.__get_current_diff()),
                 temperature=self.temperature,
             )
 
@@ -54,7 +54,7 @@ class OpenAIService:
         return str(response)
 
     def __generate_diff_summary(self, summary_batch_size: int) -> str:
-        diff = OpenAIService.__get_current_diff()
+        diff = self.__get_current_diff()
 
         encoding = tiktoken.encoding_for_model(self.model)
         expected_token_usage_count = len(encoding.encode(diff))
