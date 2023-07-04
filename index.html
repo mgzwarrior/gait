@@ -101,8 +101,7 @@ pip3 install -r requirements.txt -r test-requirements.txt
 </code></pre>
 <p>Run <code>source ~/.zshrc</code> in an open terminal window or open a new one and verify by running <code>echo $OPENAI_API_KEY</code>.</p>
 <h2 id="usage">Usage</h2>
-<pre><code class="language-commandline">python3 gait.py --help
-
+<pre><code class="language-commandline">$ python3 gait.py --help
 Usage: gait.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -110,8 +109,59 @@ Options:
 
 Commands:
   commit
+</code></pre>
+<h3 id="commit">Commit</h3>
+<pre><code class="language-commandline">$ python3 gait.py commit --help
+Usage: gait.py commit [OPTIONS]
 
-# TODO - python3 gait.py commit
+Options:
+  -a, --auto     Automatic commit mode.
+  -v, --verbose  Verbose mode.
+  --config FILE  Read configuration from FILE.
+  --help         Show this message and exit.
+</code></pre>
+<h4 id="examples">Examples</h4>
+<ol>
+<li>Use gait in interactive mode:</li>
+</ol>
+<pre><code class="language-commandline">$ python3 gait.py commit
+ChatGPT gene rated the following commit message: '&quot;\n\nAdd commit command help and example usage to README.md&quot;'
+Would you like to commit this message? [y/n/edit]
+n
+Aborting...
+</code></pre>
+<ol>
+<li>Use gait in automatic mode:</li>
+</ol>
+<pre><code class="language-commandline">$ python3 gait.py commit -a
+Committing...
+</code></pre>
+<ol>
+<li>Use gait in verbose mode:</li>
+</ol>
+<pre><code class="language-commandline">$ python3 gait.py commit -a -v
+---full-git-diff---
+ChatGPT full response:
+{
+    &quot;id&quot;: &quot;cmpl-7Yek3DUb2PgIqQpN7C2BWKPSF0KJn&quot;,
+    &quot;object&quot;: &quot;text_completion&quot;,
+    &quot;created&quot;: 1688494119,
+    &quot;model&quot;: &quot;text-davinci-003&quot;,
+    &quot;choices&quot;: [
+        {
+            &quot;text&quot;: &quot; Commit: Add commit command help and example usage to README.md&quot;,
+            &quot;index&quot;: 0,
+            &quot;logprobs&quot;: null,
+            &quot;finish_reason&quot;: &quot;stop&quot;
+        }
+    ],
+    &quot;usage&quot;: {
+        &quot;prompt_tokens&quot;: 437,
+        &quot;completion_tokens&quot;: 14,
+        &quot;total_tokens&quot;: 451
+    }
+}
+Committing...
 </code></pre>
 <h2 id="development">Development</h2>
 <p>To lint the code using <a href="https://www.jetbrains.com/help/qodana/getting-started.html">Qodana</a>, run:</p>
@@ -131,7 +181,7 @@ Commands:
 <p>Docs can be served locally using mkdocs with the following command:</p>
 <pre><code class="language-bash">mkdocs serve
 </code></pre>
-<h2 id="helpful-resources">Helpful Resources</h2>
+<h2 id="resources">Resources</h2>
 <ul>
 <li><a href="https://github.com/openai/openai-cookbook">OpenAI Cookbook</a> - a GitHub repo containing a number of userful tips for using the OpenAI API.</li>
 <li><a href="https://platform.openai.com/tokenizer">OpenAI Tokenizer</a> - a utility from OpenAI to tokenize a given text prompt.</li>
@@ -188,5 +238,5 @@ Commands:
 
 <!--
 MkDocs version : 1.4.3
-Build Date UTC : 2023-07-04 16:48:17.039088+00:00
+Build Date UTC : 2023-07-04 18:24:22.993783+00:00
 -->
