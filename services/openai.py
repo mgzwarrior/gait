@@ -92,9 +92,7 @@ class OpenAIService:
         https://platform.openai.com/docs/guides/gpt-best-practices/tactic-summarize-long-documents-piecewise-and-construct-a-full-summary-recursively
         """
         diff = GitService().diff()
-
-        encoding = tiktoken.encoding_for_model(self.model)
-        expected_token_usage_count = len(encoding.encode(diff))
+        expected_token_usage_count = self.__count_tokens(diff)
         print(f"Expected token usage: {expected_token_usage_count}")
 
         num_batches = self.API_TOKEN_LIMIT_PER_REQUEST / expected_token_usage_count
@@ -137,6 +135,10 @@ class OpenAIService:
         return f"""Write a git commit message based on the following diff within the <<< >>> below.
         
 <<<{diff}>>>"""
+
+    def __count_tokens(self, diff: str) -> int:
+        encoding = tiktoken.encoding_for_model(self.model)
+        return len(encoding.encode(diff))
 
     def __set_openai_completion_engine(self) -> None:
         self.completion_engine: Type[EngineAPIResource] = openai.Completion
