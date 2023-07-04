@@ -1,4 +1,3 @@
-"""Main gait module, contains CLI commands created via Click."""
 import json
 import logging
 
@@ -24,7 +23,6 @@ def gait() -> None:
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
 @click_config_file.configuration_option(config_file_name="gait.config", implicit=True)
 def commit(auto, verbose) -> None:
-    """Generate a commit message."""
     git_service = GitService()
     openai_service = OpenAIService()
 

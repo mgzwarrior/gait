@@ -86,7 +86,7 @@ Docs can be served locally using mkdocs with the following command:
 mkdocs serve
 ```
 
-## Helpful Resources
+## Resources
 
 - [OpenAI Cookbook](https://github.com/openai/openai-cookbook) - a GitHub repo containing a number of userful tips for using the OpenAI API.
 - [OpenAI Tokenizer](https://platform.openai.com/tokenizer) - a utility from OpenAI to tokenize a given text prompt.
