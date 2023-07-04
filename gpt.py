@@ -1,8 +1,8 @@
-"""ChatGPT module, contains OpenAIService class."""
 import os
 import subprocess
 
 import openai
+import tiktoken
 
 from exceptions import GitException, OpenAIException
 
@@ -20,52 +20,75 @@ index 9f9c653..4dd9f3a 100644
 -
 -Some content.
 \\ No newline at end of file
-
 """
 
 
 class OpenAIService:
-    """OpenAI Service."""
-    def __init__(self):
+    DEFAULT_MODEL = "text-davinci-003"
+    DEFAULT_TEMPERATURE = 0.5
+    API_TOKEN_LIMIT_PER_REQUEST = 1000
+
+    def __init__(
+        self, model: str = DEFAULT_MODEL, temperature: float = DEFAULT_TEMPERATURE
+    ):
+        self.model = model
+        self.temperature = temperature
         self.__set_openai_api_key()
 
     def generate_commit_message(self) -> str:
-        """Generate a commit message."""
-        cmd = ['git --no-pager diff']
+        try:
+            response = openai.Completion.create(
+                model=self.model,
+                prompt=self.__generate_prompt(OpenAIService.__get_current_diff()),
+                temperature=self.temperature,
+            )
 
-        with open("diff.txt", "w", encoding="utf-8") as diff_file:
-            try:
-                subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
-            except subprocess.CalledProcessError as exc:
-                raise GitException(exc) from exc
-
-        with open("diff.txt", "r", encoding="utf-8") as diff:
-            try:
-                #  To use real git diff
-                response = openai.Completion.create(
-                    model="text-davinci-003",
-                    prompt=self.generate_prompt(str(diff.read())),
-                    temperature=0.5
-                )
-                #  To use sample diff
-                # response = openai.Completion.create(
-                #     model="text-davinci-003",
-                #     prompt=self.generate_prompt(SAMPLE_DIFF),
-                #     temperature=0.5
-                # )
-            except openai.error.OpenAIError as exc:
-                raise OpenAIException(exc) from exc
+            # response = openai.Completion.create(
+            #     model=model,
+            #     prompt=self.generate_prompt(SAMPLE_DIFF),
+            #     temperature=temperature
+            # )
+        except openai.error.OpenAIError as exc:
+            raise OpenAIException(exc) from exc
 
         return str(response)
 
+    def __generate_diff_summary(self, summary_batch_size: int) -> str:
+        diff = OpenAIService.__get_current_diff()
+
+        encoding = tiktoken.encoding_for_model(self.model)
+        expected_token_usage_count = len(encoding.encode(diff))
+        num_batches = self.API_TOKEN_LIMIT_PER_REQUEST / expected_token_usage_count
+
+        for _ in range(1, int(num_batches)):
+            # Create batch from diff & send to below function.
+            # summary = self.__generate_diff_batch_summary(batch, summary_batch_size) -> calls API for summary.
+            # Feed the summary back into the next request to create next.
+            pass
+
+        return ""
+
+    def __generate_diff_batch_summary(self, summary_batch_size: int) -> str:
+        pass
+
     @staticmethod
-    def generate_prompt(diff: str) -> str:
-        """Generate a prompt for the OpenAI API."""
+    def __get_current_diff() -> str:
+        cmd = ["git --no-pager diff"]
+
+        try:
+            output = subprocess.run(cmd, capture_output=True, shell=True, check=True)
+            diff = output.stdout.decode()
+        except subprocess.CalledProcessError as exc:
+            raise GitException(exc) from exc
+
+        return diff
+
+    @staticmethod
+    def __generate_prompt(diff: str) -> str:
         return f"""Write a git commit message based on the following diff within the <<< >>> below.
         
 <<<{diff}>>>"""
 
     @staticmethod
     def __set_openai_api_key() -> None:
-        """Set the OpenAI API key."""
         openai.api_key = os.getenv("OPENAI_API_KEY")
