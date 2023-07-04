@@ -4,7 +4,8 @@ import logging
 
 import click
 
-from exceptions import GitException
+from exceptions import GitException, OpenAIException
+from git import GitService
 from gpt import OpenAIService
 
 logger = logging.getLogger("gait")
@@ -21,11 +22,23 @@ def gait() -> None:
 @click.option("--verbose", "-v", help="Verbose mode.", is_flag=True)
 def commit(verbose) -> None:
     """Generate a commit message."""
-    service = OpenAIService()
+    git_service = GitService()
+    openai_service = OpenAIService()
 
     try:
-        models = json.loads(service.generate_commit_message())
+        diff = git_service.diff()
     except GitException as exc:
+        logger.error(exc)
+        raise click.ClickException(str(exc))
+
+    if verbose:
+        print("Git full diff:")
+        print(diff)
+
+    try:
+        models = json.loads(openai_service.generate_commit_message(diff))
+        logger.info(json.dumps(models, indent=4))
+    except OpenAIException as exc:
         logger.error(exc)
         raise click.ClickException(str(exc))
 
@@ -43,18 +56,22 @@ def commit(verbose) -> None:
 
     if choice == "y":
         print("Committing...")
-        # Disabled for testing
-        # service.commit(message)
+        try:
+            git_service.commit(message)
+        except GitException as exc:
+            logger.error(exc)
+            raise click.ClickException(str(exc))
     elif choice == "edit":
         print("Please enter your commit message below:")
         user_commit_message = input()
         print("Committing...")
-        # Disabled for testing
-        # service.commit(user_commit_message)
+        try:
+            git_service.commit(user_commit_message)
+        except GitException as exc:
+            logger.error(exc)
+            raise click.ClickException(str(exc))
     else:
         print("Aborting...")
-
-    logger.info(json.dumps(models, indent=4))
 
 
 if __name__ == "__main__":
