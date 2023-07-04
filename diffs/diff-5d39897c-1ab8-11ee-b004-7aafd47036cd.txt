@@ -1,0 +1,140 @@
+diff --git a/docs/tests.md b/docs/tests.md
+index 2eb4420..79beedd 100644
+--- a/docs/tests.md
++++ b/docs/tests.md
+@@ -39,3 +39,9 @@ This page is a dumping ground for any tests that you run and their results.  Ple
+ 
+ *Note that the commit message is correct, but the finish_reason is length even though we are no where close to the token limit.  Need to research this further.*
+ *Demo run through of the flow for [#8](https://github.com/mgzwarrior/gait/issues/8)*
++
++## Test Run 6
++
++![Test Run 6](img/test_6.png)
++
++*Demo run through of the flow for [#9](https://github.com/mgzwarrior/gait/issues/9)*
+diff --git a/gait.py b/gait.py
+index d1b7843..988dfc4 100644
+--- a/gait.py
++++ b/gait.py
+@@ -1,5 +1,9 @@
+ import json
+ import logging
++import os
++import subprocess
++from getpass import getpass
++from pathlib import Path
+ 
+ import click
+ import click_config_file
+@@ -16,6 +20,9 @@ CONFIG_FILENAME = ".gaitconfig"
+ 
+ @click.group()
+ def gait() -> None:
++    """Gait is a CLI tool that uses OpenAI's ChatGPT to generate commit messages.
++    It is designed to be used with Git.
++    """
+     return None
+ 
+ 
+@@ -28,6 +35,10 @@ def gait() -> None:
+     config_file_name=CONFIG_FILENAME
+ )  # Note that this does not work implicitly
+ def commit(auto, verbose) -> None:
++    """This command is ued to generate a commit message using ChatGPT.
++    The message is generated based on the diff of the current branch and the master branch.
++    There are two modes for this command: interactive mode (default) and automatic mode.
++    """
+     git_service = GitService()
+     openai_service = OpenAIService()
+ 
+@@ -73,6 +84,37 @@ def commit(auto, verbose) -> None:
+             print("Aborting...")
+ 
+ 
++@gait.command()
++@click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
++@click_config_file.configuration_option(
++    config_file_name=CONFIG_FILENAME
++)  # Note that this does not work implicitly
++def configure(verbose) -> None:
++    """This command is used to configure Gait.
++    If required, it will prompt the user for their OpenAI API key and test the connection.
++    """
++    print("Setting up Gait...")
++
++    if os.getenv("OPENAI_API_KEY"):
++        __test_openai_connection(verbose)
++    else:
++        print("In order to use Gait, you must setup an OpenAI API key for your account.")
++        print("Navigating to https://platform.openai.com/account/api-keys to create a new key.")
++
++        key = getpass(prompt="Please enter your OpenAI API Key: ")
++
++        with open(Path.home() / ".zshrc", "a") as config_file:
++            config_file.write(f"OPENAI_API_KEY={key}")
++            subprocess.run(["source", "~/.zshrc"])
++
++        # TODO: ensure that env var persists
++        __test_openai_connection(verbose)
++
++    # TODO: Add git config verification
++
++    print("Gait setup complete!")
++
++
+ def __git_commit(service: GitService, message: str) -> None:
+     print("Committing...")
+ 
+@@ -83,5 +125,19 @@ def __git_commit(service: GitService, message: str) -> None:
+         raise click.ClickException(str(exc))
+ 
+ 
++def __test_openai_connection(verbose: bool) -> None:
++    try:
++        openai_service = OpenAIService()
++        response = openai_service.test_connection()
++    except OpenAIException as exc:
++        logger.error(exc)
++        raise click.ClickException(str(exc))
++
++    if verbose:
++        print(f"OpenAI response: {json.dumps(response, indent=4)}")
++
++    print("OpenAI setup complete!")
++
++
+ if __name__ == "__main__":
+     gait()
+diff --git a/services/openai.py b/services/openai.py
+index c408fcd..a18b0a5 100644
+--- a/services/openai.py
++++ b/services/openai.py
+@@ -29,7 +29,9 @@ class OpenAIService:
+     API_TOKEN_LIMIT_PER_REQUEST = 1000
+ 
+     def __init__(
+-        self, model: str = DEFAULT_MODEL, temperature: float = DEFAULT_TEMPERATURE
++        self,
++        model: str = DEFAULT_MODEL,
++        temperature: float = DEFAULT_TEMPERATURE
+     ):
+         self.model = model
+         self.temperature = temperature
+@@ -59,6 +61,17 @@ class OpenAIService:
+ 
+         return str(response)
+ 
++    @staticmethod
++    def test_connection() -> bool:
++        try:
++            response = openai.Model.list()
++        except openai.error.OpenAIError as exc:
++            raise OpenAIException(exc) from exc
++
++        if not response:
++            return False
++        return True
++
+     def __generate_diff_summary(self, summary_batch_size: int) -> str:
+         """
+         Based on the approach described in GPT best practices below.

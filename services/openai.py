@@ -29,7 +29,9 @@ class OpenAIService:
     API_TOKEN_LIMIT_PER_REQUEST = 1000
 
     def __init__(
-        self, model: str = DEFAULT_MODEL, temperature: float = DEFAULT_TEMPERATURE
+        self,
+        model: str = DEFAULT_MODEL,
+        temperature: float = DEFAULT_TEMPERATURE
     ):
         self.model = model
         self.temperature = temperature
@@ -58,6 +60,17 @@ class OpenAIService:
             raise OpenAIException(exc) from exc
 
         return str(response)
+
+    @staticmethod
+    def test_connection() -> bool:
+        try:
+            response = openai.Model.list()
+        except openai.error.OpenAIError as exc:
+            raise OpenAIException(exc) from exc
+
+        if not response:
+            return False
+        return True
 
     def __generate_diff_summary(self, summary_batch_size: int) -> str:
         """
