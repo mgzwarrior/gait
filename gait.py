@@ -33,7 +33,7 @@ def commit(verbose) -> None:
 
     if verbose:
         print("Git full diff:")
-        print(diff)
+        print(diff)  # This prints a bit wonky, need to format better
 
     try:
         models = json.loads(openai_service.generate_commit_message(diff))

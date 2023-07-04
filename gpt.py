@@ -1,10 +1,9 @@
 """ChatGPT module, contains OpenAIService class."""
 import os
-import subprocess
 
 import openai
 
-from exceptions import GitException, OpenAIException
+from exceptions import OpenAIException
 
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md

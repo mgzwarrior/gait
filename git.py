@@ -1,3 +1,4 @@
+"""Git service module."""
 import subprocess
 
 from exceptions import GitException
