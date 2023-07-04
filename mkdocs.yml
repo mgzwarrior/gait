@@ -14,3 +14,4 @@ theme: readthedocs
 nav:
   - README: README.md
   - Tests: tests.md
+  - Contributing: contributing.md
