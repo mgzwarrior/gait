@@ -1,4 +1,7 @@
-# gAIt
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./img/logo_dark.png">
+  <img alt="Shows the gait logo in light mode and dark mode." src="./img/logo_light.png" width=50% height=50%>
+</picture>
 
 A git AI productivity tool.
 
