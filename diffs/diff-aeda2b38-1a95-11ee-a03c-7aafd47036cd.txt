@@ -1,0 +1,47 @@
+diff --git a/docs/README.md b/docs/README.md
+index 3fa6c0f..4750ff8 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -46,10 +46,41 @@ Options:
+ 
+ Commands:
+   commit
++```
++
++### Commit
++
++```commandline
++$ python3 gait.py commit --help
++Usage: gait.py commit [OPTIONS]
++
++Options:
++  -a, --auto     Automatic commit mode.
++  -v, --verbose  Verbose mode.
++  --config FILE  Read configuration from FILE.
++  --help         Show this message and exit.
++```
++
++#### Examples
+ 
+-# TODO - python3 gait.py commit
++1. Use gait in interactive mode:
++
++```commandline
++$ python3 gait.py commit
++ChatGPT gene rated the following commit message: '"\n\nAdd commit command help and example usage to README.md"'
++Would you like to commit this message? [y/n/edit]
++n
++Aborting...
+ ```
+ 
++2. Use gait in automatic mode:
++
++```commandline
++$ python3 gait.py commit -a
++
++
++
++
+ ## Development
+ 
+ To lint the code using [Qodana](https://www.jetbrains.com/help/qodana/getting-started.html), run:

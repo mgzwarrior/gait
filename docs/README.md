@@ -37,8 +37,7 @@ Run `source ~/.zshrc` in an open terminal window or open a new one and verify by
 ## Usage
 
 ```commandline
-python3 gait.py --help
-
+$ python3 gait.py --help
 Usage: gait.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -46,9 +45,68 @@ Options:
 
 Commands:
   commit
-
-# TODO - python3 gait.py commit
 ```
+
+### Commit
+
+```commandline
+$ python3 gait.py commit --help
+Usage: gait.py commit [OPTIONS]
+
+Options:
+  -a, --auto     Automatic commit mode.
+  -v, --verbose  Verbose mode.
+  --config FILE  Read configuration from FILE.
+  --help         Show this message and exit.
+```
+
+#### Examples
+
+1. Use gait in interactive mode:
+
+```commandline
+$ python3 gait.py commit
+ChatGPT gene rated the following commit message: '"\n\nAdd commit command help and example usage to README.md"'
+Would you like to commit this message? [y/n/edit]
+n
+Aborting...
+```
+
+2. Use gait in automatic mode:
+
+```commandline
+$ python3 gait.py commit -a
+Committing...
+```
+
+3. Use gait in verbose mode:
+
+```commandline
+$ python3 gait.py commit -a -v
+---full-git-diff---
+ChatGPT full response:
+{
+    "id": "cmpl-7Yek3DUb2PgIqQpN7C2BWKPSF0KJn",
+    "object": "text_completion",
+    "created": 1688494119,
+    "model": "text-davinci-003",
+    "choices": [
+        {
+            "text": " Commit: Add commit command help and example usage to README.md",
+            "index": 0,
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 437,
+        "completion_tokens": 14,
+        "total_tokens": 451
+    }
+}
+Committing...
+```
+
 
 ## Development
 

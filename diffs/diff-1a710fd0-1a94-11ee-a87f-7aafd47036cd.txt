@@ -1,0 +1,64 @@
+diff --git a/gait.py b/gait.py
+index 97e96fd..375650a 100644
+--- a/gait.py
++++ b/gait.py
+@@ -27,18 +27,18 @@ def commit(auto, verbose) -> None:
+     openai_service = OpenAIService()
+ 
+     try:
+-        git_service.diff()
++        diff_fn = git_service.diff()
+     except GitException as exc:
+         logger.error(exc)
+         raise click.ClickException(str(exc))
+ 
+     if verbose:
+         print("Git full diff:")
+-        with open("diff.txt", "r", encoding="utf-8") as diff_file:
++        with open(diff_fn, "r", encoding="utf-8") as diff_file:
+             print(diff_file.read())
+ 
+     try:
+-        with open("diff.txt", "r", encoding="utf-8") as diff_file:
++        with open(diff_fn, "r", encoding="utf-8") as diff_file:
+             models = json.loads(openai_service.generate_commit_message(diff_file.read()))
+             logger.info(json.dumps(models, indent=4))
+     except OpenAIException as exc:
+diff --git a/git.py b/git.py
+index d9aec76..046960e 100644
+--- a/git.py
++++ b/git.py
+@@ -1,14 +1,13 @@
+ """Git service module."""
+ import subprocess
++import uuid
+ 
+ from exceptions import GitException
+ 
+ 
+ class GitService:
+-    """Git service class"""
+     @staticmethod
+     def commit(message: str) -> None:
+-        """Commit with passed message."""
+         cmd = ['git commit -m', message]
+ 
+         try:
+@@ -19,12 +18,14 @@ class GitService:
+             raise GitException(exc) from exc
+ 
+     @staticmethod
+-    def diff() -> None:
+-        """Get diff."""
++    def diff() -> str:
+         cmd = ['git --no-pager diff']
++        filename = f"diffs/diff-{uuid.uuid1()}.txt"
+ 
+         try:
+-            with open("diff.txt", "w", encoding="utf-8") as diff_file:
++            with open(filename, "w", encoding="utf-8") as diff_file:
+                 subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
+         except subprocess.CalledProcessError as exc:
+             raise GitException(exc) from exc
++
++        return filename

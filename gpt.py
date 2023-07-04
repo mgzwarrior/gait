@@ -1,10 +1,9 @@
 import os
-import subprocess
 
 import openai
 import tiktoken
 
-from exceptions import GitException, OpenAIException
+from exceptions import OpenAIException
 
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md
@@ -41,11 +40,12 @@ class OpenAIService:
     def generate_pull_request_description(self) -> str:
         pass
 
-    def generate_commit_message(self) -> str:
+    def generate_commit_message(self, diff: str) -> str:
         try:
+            #  To use real git diff
             response = openai.Completion.create(
                 model=self.model,
-                prompt=self.__generate_prompt(self.__get_current_diff()),
+                prompt=self.__generate_prompt(diff),
                 temperature=self.temperature,
             )
 
