@@ -1,5 +1,6 @@
 import os
-from typing import Type
+import textwrap
+from typing import Optional, Type
 
 import openai
 import tiktoken
@@ -49,27 +50,28 @@ class OpenAIService:
 
     def generate_commit_message(self, diff: str) -> str:
         try:
-            commit_message = self.__create_diff_completion(diff)
+            commit_message = self.__create_completion(
+                user_prompt=self.__generate_prompt(diff)
+            )
         except openai.error.OpenAIError as error:
             raise OpenAIException(error) from error
 
         return commit_message
 
-    def __create_diff_completion(self, diff: str) -> str:
+    def __create_completion(
+        self, user_prompt: str, system_prompt: Optional[str] = None
+    ) -> str:
         if self.completion_engine == openai.ChatCompletion:
             messages = [
-                {
-                    "role": "system",
-                    "content": "This is text summarization of git diffs.",
-                },
-                {"role": "user", "content": self.__generate_prompt(diff)},
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
             ]
 
             response = openai.ChatCompletion.create(
                 model=self.model,
                 messages=messages,
-                temperature=0.5,
-                max_tokens=500,
+                temperature=self.temperature,
+                max_tokens=self.API_TOKEN_LIMIT_PER_REQUEST,
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
@@ -78,12 +80,12 @@ class OpenAIService:
         else:
             response = openai.Completion.create(
                 model=self.model,
-                prompt=self.__generate_prompt(diff),
+                prompt=user_prompt,
                 temperature=self.temperature,
             )
             return str(response)
 
-    def __generate_diff_summary(self, summary_batch_size: int) -> str:
+    def __generate_diff_summary(self) -> str:
         """
         Based on the approach described in GPT best practices below.
 
@@ -93,18 +95,43 @@ class OpenAIService:
 
         encoding = tiktoken.encoding_for_model(self.model)
         expected_token_usage_count = len(encoding.encode(diff))
+        print(f"Expected token usage: {expected_token_usage_count}")
+
         num_batches = self.API_TOKEN_LIMIT_PER_REQUEST / expected_token_usage_count
+        print(f"Number of batches to summarize: {num_batches}")
 
-        for _ in range(1, int(num_batches)):
-            # Create batch from diff & send to below function.
-            # summary = self.__generate_diff_batch_summary(batch, summary_batch_size) -> calls API for summary.
-            # Feed the summary back into the next request to create next.
-            pass
+        chunks = textwrap.wrap(
+            diff, self.API_TOKEN_LIMIT_PER_REQUEST, replace_whitespace=False
+        )
+        previous_summary = None
 
-        return ""
+        for chunk in chunks:
+            previous_summary = self.__generate_diff_batch_summary(
+                chunk, previous_summary
+            )
 
-    def __generate_diff_batch_summary(self, summary_batch_size: int) -> str:
-        pass
+        final_summary = previous_summary
+        return final_summary
+
+    def __generate_diff_batch_summary(self, chunk: str, previous_summary: str) -> str:
+        if previous_summary is not None:
+            return self.__create_completion(
+                system_prompt="You are going to be given a git diff summarization and a new git diff. "
+                "Your task is to compare the two and produce a new summarization with a "
+                "limit of X words.",
+                user_prompt="Summarize the previous git diff summarization within the << >> and "
+                "the following git diff within the <<< >>> below into X words."
+                f"<<{previous_summary}>>"
+                f"<<<{chunk}>>>",
+            )
+        else:
+            return self.__create_completion(
+                system_prompt="You are going to be given a git diff summarization and a new git diff. "
+                "Your task is to compare the two and produce a new summarization with a "
+                "limit of X words.",
+                user_prompt="Summarize the following git diff within the <<< >>> below into X words."
+                f"<<<{chunk}>>>",
+            )
 
     @staticmethod
     def __generate_prompt(diff: str) -> str:
