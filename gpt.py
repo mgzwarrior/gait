@@ -35,6 +35,12 @@ class OpenAIService:
         self.temperature = temperature
         self.__set_openai_api_key()
 
+    def create_pull_request_on_push_to_remote(self):
+        pass
+
+    def generate_pull_request_description(self) -> str:
+        pass
+
     def generate_commit_message(self) -> str:
         try:
             response = openai.Completion.create(
