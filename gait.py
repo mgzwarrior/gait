@@ -27,18 +27,18 @@ def commit(auto, verbose) -> None:
     openai_service = OpenAIService()
 
     try:
-        git_service.diff()
+        diff_fn = git_service.diff()
     except GitException as exc:
         logger.error(exc)
         raise click.ClickException(str(exc))
 
     if verbose:
         print("Git full diff:")
-        with open("diff.txt", "r", encoding="utf-8") as diff_file:
+        with open(diff_fn, "r", encoding="utf-8") as diff_file:
             print(diff_file.read())
 
     try:
-        with open("diff.txt", "r", encoding="utf-8") as diff_file:
+        with open(diff_fn, "r", encoding="utf-8") as diff_file:
             models = json.loads(openai_service.generate_commit_message(diff_file.read()))
             logger.info(json.dumps(models, indent=4))
     except OpenAIException as exc:
