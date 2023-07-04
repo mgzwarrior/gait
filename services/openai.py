@@ -51,7 +51,7 @@ class OpenAIService:
     def generate_commit_message(self, diff: str) -> str:
         try:
             commit_message = self.__create_completion(
-                user_prompt=self.__generate_prompt(diff)
+                user_prompt=self.__generate_commit_message_prompt(diff)
             )
         except openai.error.OpenAIError as error:
             raise OpenAIException(error) from error
@@ -134,7 +134,7 @@ class OpenAIService:
             )
 
     @staticmethod
-    def __generate_prompt(diff: str) -> str:
+    def __generate_commit_message_prompt(diff: str) -> str:
         return f"""Write a git commit message based on the following diff within the <<< >>> below.
         
 <<<{diff}>>>"""
