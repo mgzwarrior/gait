@@ -3,6 +3,7 @@ import json
 import logging
 
 import click
+import click_config_file
 
 from exceptions import GitException, OpenAIException
 from git import GitService
@@ -19,8 +20,10 @@ def gait() -> None:
 
 
 @gait.command()
-@click.option("--verbose", "-v", help="Verbose mode.", is_flag=True)
-def commit(verbose) -> None:
+@click.option("--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True)
+@click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
+@click_config_file.configuration_option(config_file_name="gait.config", implicit=True)
+def commit(auto, verbose) -> None:
     """Generate a commit message."""
     git_service = GitService()
     openai_service = OpenAIService()
@@ -50,30 +53,38 @@ def commit(verbose) -> None:
 
     message = json.dumps(models["choices"][0]["text"], indent=4)
 
-    print(f"ChatGPT generated the following commit message: '{message}'")
-
-    print("Would you like to commit this message? [y/n/edit]")
-
-    choice = input()
-
-    if choice == "y":
+    if auto:
         print("Committing...")
         try:
             git_service.commit(message)
         except GitException as exc:
             logger.error(exc)
             raise click.ClickException(str(exc))
-    elif choice == "edit":
-        print("Please enter your commit message below:")
-        user_commit_message = input()
-        print("Committing...")
-        try:
-            git_service.commit(user_commit_message)
-        except GitException as exc:
-            logger.error(exc)
-            raise click.ClickException(str(exc))
     else:
-        print("Aborting...")
+        print(f"ChatGPT generated the following commit message: '{message}'")
+
+        print("Would you like to commit this message? [y/n/edit]")
+
+        choice = input()
+
+        if choice == "y":
+            print("Committing...")
+            try:
+                git_service.commit(message)
+            except GitException as exc:
+                logger.error(exc)
+                raise click.ClickException(str(exc))
+        elif choice == "edit":
+            print("Please enter your commit message below:")
+            user_commit_message = input()
+            print("Committing...")
+            try:
+                git_service.commit(user_commit_message)
+            except GitException as exc:
+                logger.error(exc)
+                raise click.ClickException(str(exc))
+        else:
+            print("Aborting...")
 
 
 if __name__ == "__main__":
