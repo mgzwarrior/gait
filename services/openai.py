@@ -60,6 +60,17 @@ class OpenAIService:
 
         return commit_message
 
+    @staticmethod
+    def test_connection() -> bool:
+        try:
+            response = openai.Model.list()
+        except openai.error.OpenAIError as exc:
+            raise OpenAIException(exc) from exc
+
+        if not response:
+            return False
+        return True
+
     def __create_completion(
         self, user_prompt: str, system_prompt: Optional[str] = None
     ) -> str:
@@ -86,27 +97,6 @@ class OpenAIService:
                 temperature=self.temperature,
             )
             return str(response)
-
-            # response = openai.Completion.create(
-            #     model=model,
-            #     prompt=self.generate_prompt(SAMPLE_DIFF),
-            #     temperature=temperature
-            # )
-        except openai.error.OpenAIError as exc:
-            raise OpenAIException(exc) from exc
-
-        return str(response)
-
-    @staticmethod
-    def test_connection() -> bool:
-        try:
-            response = openai.Model.list()
-        except openai.error.OpenAIError as exc:
-            raise OpenAIException(exc) from exc
-
-        if not response:
-            return False
-        return True
 
     def __generate_diff_summary(self) -> str:
         """
