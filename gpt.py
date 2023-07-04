@@ -57,7 +57,7 @@ class OpenAIService:
         """
         Based on the approach described in GPT best practices below.
 
-        https://platform.openai.com/docs/guides/gpt-best-practices/strategy-split-complex-tasks-into-simpler-subtasks
+        https://platform.openai.com/docs/guides/gpt-best-practices/tactic-summarize-long-documents-piecewise-and-construct-a-full-summary-recursively
         """
         diff = self.__get_current_diff()
 
