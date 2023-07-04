@@ -20,9 +20,13 @@ def gait() -> None:
 
 
 @gait.command()
-@click.option("--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True)
+@click.option(
+    "--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True
+)
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
-@click_config_file.configuration_option(config_file_name=CONFIG_FILENAME)  # Note that this does not work implicitly
+@click_config_file.configuration_option(
+    config_file_name=CONFIG_FILENAME
+)  # Note that this does not work implicitly
 def commit(auto, verbose) -> None:
     git_service = GitService()
     openai_service = OpenAIService()
@@ -40,7 +44,9 @@ def commit(auto, verbose) -> None:
 
             if verbose:
                 print(f"Diff: {diff}")
-                print(f"Generated commit message: {json.dumps(commit_message, indent=4)}")
+                print(
+                    f"Generated commit message: {json.dumps(commit_message, indent=4)}"
+                )
 
             logger.info(json.dumps(commit_message, indent=4))
     except OpenAIException as exc:
