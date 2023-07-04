@@ -1,8 +1,7 @@
-"""Git service module."""
 import subprocess
 import uuid
 
-from exceptions import GitException
+from services.exceptions import GitException
 
 
 class GitService:

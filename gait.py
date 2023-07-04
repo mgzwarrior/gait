@@ -4,24 +4,25 @@ import logging
 import click
 import click_config_file
 
-from exceptions import GitException, OpenAIException
-from git import GitService
-from gpt import OpenAIService
+from services.exceptions import GitException, OpenAIException
+from services.git import GitService
+from services.gpt import OpenAIService
 
 logger = logging.getLogger("gait")
 logging.basicConfig(filename="gait.log", filemode="w", level=logging.DEBUG)
 
+CONFIG_FILENAME = ".gaitconfig"
+
 
 @click.group()
 def gait() -> None:
-    """Gait CLI."""
     return None
 
 
 @gait.command()
 @click.option("--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True)
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
-@click_config_file.configuration_option(config_file_name=".gaitconfig")  # Note that this does not work implicitly
+@click_config_file.configuration_option(config_file_name=CONFIG_FILENAME)  # Note that this does not work implicitly
 def commit(auto, verbose) -> None:
     git_service = GitService()
     openai_service = OpenAIService()
@@ -32,30 +33,26 @@ def commit(auto, verbose) -> None:
         logger.error(exc)
         raise click.ClickException(str(exc))
 
-    if verbose:
-        print("Git full diff:")
-        with open(diff_fn, "r", encoding="utf-8") as diff_file:
-            print(diff_file.read())
-
     try:
         with open(diff_fn, "r", encoding="utf-8") as diff_file:
-            models = json.loads(openai_service.generate_commit_message(diff_file.read()))
-            logger.info(json.dumps(models, indent=4))
+            diff = diff_file.read()
+            commit_message = json.loads(openai_service.generate_commit_message(diff))
+
+            if verbose:
+                print(f"Diff: {diff}")
+                print(f"Generated commit message: {json.dumps(commit_message, indent=4)}")
+
+            logger.info(json.dumps(commit_message, indent=4))
     except OpenAIException as exc:
         logger.error(exc)
         raise click.ClickException(str(exc))
 
-    if verbose:
-        print("ChatGPT full response:")
-        print(json.dumps(models, indent=4))
-
-    message = json.dumps(models["choices"][0]["text"], indent=4)
+    message = json.dumps(commit_message["choices"][0]["text"], indent=4)
 
     if auto:
         __git_commit(git_service, message)
     else:
-        print(f"ChatGPT gene rated the following commit message: '{message}'")
-
+        print(f"ChatGPT generated the following commit message: '{message}'")
         print("Would you like to commit this message? [y/n/edit]")
 
         choice = input()
@@ -72,6 +69,7 @@ def commit(auto, verbose) -> None:
 
 def __git_commit(service: GitService, message: str) -> None:
     print("Committing...")
+
     try:
         service.commit(message)
     except GitException as exc:

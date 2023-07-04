@@ -3,7 +3,8 @@ import os
 import openai
 import tiktoken
 
-from exceptions import OpenAIException
+from services.exceptions import OpenAIException
+from services.git import GitService
 
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md
@@ -42,7 +43,6 @@ class OpenAIService:
 
     def generate_commit_message(self, diff: str) -> str:
         try:
-            #  To use real git diff
             response = openai.Completion.create(
                 model=self.model,
                 prompt=self.__generate_prompt(diff),
@@ -65,7 +65,7 @@ class OpenAIService:
 
         https://platform.openai.com/docs/guides/gpt-best-practices/tactic-summarize-long-documents-piecewise-and-construct-a-full-summary-recursively
         """
-        diff = self.__get_current_diff()
+        diff = GitService().diff()
 
         encoding = tiktoken.encoding_for_model(self.model)
         expected_token_usage_count = len(encoding.encode(diff))
@@ -81,18 +81,6 @@ class OpenAIService:
 
     def __generate_diff_batch_summary(self, summary_batch_size: int) -> str:
         pass
-
-    @staticmethod
-    def __get_current_diff() -> str:
-        cmd = ["git --no-pager diff"]
-
-        try:
-            output = subprocess.run(cmd, capture_output=True, shell=True, check=True)
-            diff = output.stdout.decode()
-        except subprocess.CalledProcessError as exc:
-            raise GitException(exc) from exc
-
-        return diff
 
     @staticmethod
     def __generate_prompt(diff: str) -> str:
