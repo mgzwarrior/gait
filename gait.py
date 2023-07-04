@@ -21,7 +21,7 @@ def gait() -> None:
 @gait.command()
 @click.option("--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True)
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
-@click_config_file.configuration_option(config_file_name="gait.config", implicit=True)
+@click_config_file.configuration_option(config_file_name=".gaitconfig")  # Note that this does not work implicitly
 def commit(auto, verbose) -> None:
     git_service = GitService()
     openai_service = OpenAIService()
