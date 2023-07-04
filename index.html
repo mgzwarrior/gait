@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="Documentation for the gAIt project, a git productivity tool using ChatGPT." /><link rel="canonical" href="https://michaelcurrin.github.io/mkdocs-quickstart/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>gAIt Docs</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "README";
+        var mkdocs_page_input_path = "README.md";
+        var mkdocs_page_url = "/mkdocs-quickstart/";
+      </script>
+    
+    <script src="js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> gAIt Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href=".">README</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="tests/">Tests</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="contributing/">Contributing</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">gAIt Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li>README</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/mgzwarrior/gait/edit/master/docs/docs/README.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./img/logo_dark.png">
+  <img alt="Shows the gait logo in light mode and dark mode." src="./img/logo_light.png" width=50% height=50%>
+</picture></p>
+<p>A git AI productivity tool.</p>
+<p><a href="https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml"><img alt="Pylint" src="https://github.com/mgzwarrior/gait/actions/workflows/pylint.yml/badge.svg" /></a>
+<a href="https://github.com/mgzwarrior/gait/actions/workflows/mkdocs.yml"><img alt="update-gh-pages-branch" src="https://github.com/mgzwarrior/gait/actions/workflows/mkdocs.yml/badge.svg" /></a>
+<a href="https://github.com/mgzwarrior/gait/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/mgzwarrior/gait/actions/workflows/pages/pages-build-deployment/badge.svg" /></a>
+<a href="https://github.com/mgzwarrior/gait/actions/workflows/github-code-scanning/codeql"><img alt="CodeQL" src="https://github.com/mgzwarrior/gait/actions/workflows/github-code-scanning/codeql/badge.svg" /></a></p>
+<h2 id="installation">Installation</h2>
+<pre><code class="language-bash">pyenv install
+
+pip3 install -r requirements.txt -r test-requirements.txt
+</code></pre>
+<h2 id="setup">Setup</h2>
+<p>Before using gait, you must create an OpenAI secret API key.  To do this, login to your OpenAI account (or create one if you don't already have one, they are free!), click "Personal" in the top right, then click "View API keys" in the dropdown that appears.  On the next page, click "Create new secret key" and give it a name.  Copy the key that is created.</p>
+<p>You will need to add this key to an environment variable called <code>OPENAI_API_KEY</code>.</p>
+<h3 id="zsh">zsh</h3>
+<p>Open your <code>.zshrc</code> and add the following line:</p>
+<pre><code>export OPENAI_API_KEY=&quot;&lt;insert-api-key-here&gt;&quot;
+</code></pre>
+<p>Run <code>source ~/.zshrc</code> in an open terminal window or open a new one and verify by running <code>echo $OPENAI_API_KEY</code>.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="language-commandline">python3 gait.py --help
+
+Usage: gait.py [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  commit
+
+# TODO - python3 gait.py commit
+</code></pre>
+<h2 id="development">Development</h2>
+<p>To lint the code using <a href="https://www.jetbrains.com/help/qodana/getting-started.html">Qodana</a>, run:</p>
+<pre><code class="language-bash">qodana scan --show-report
+</code></pre>
+<h3 id="updating-requirements">Updating Requirements</h3>
+<p>When new libraries are added using pip, be sure to update the <code>requirements.txt</code> file by running:</p>
+<pre><code class="language-bash">pip3 freeze &gt; requirements.txt
+</code></pre>
+<h3 id="linting">Linting</h3>
+<p>Lint the entire project by running pylint using the following command:</p>
+<pre><code class="language-bash">pylint $(git ls-files '*.py')
+</code></pre>
+<p>This is also run automatically as a GitHub Workflow for all pushes to the <code>main</code> branch.</p>
+<h3 id="documentation">Documentation</h3>
+<p>Use the <code>/docs</code> folder for documentation.</p>
+<p>Docs can be served locally using mkdocs with the following command:</p>
+<pre><code class="language-bash">mkdocs serve
+</code></pre>
+<h2 id="helpful-resources">Helpful Resources</h2>
+<ul>
+<li><a href="https://github.com/openai/openai-cookbook">OpenAI Cookbook</a> - a GitHub repo containing a number of userful tips for using the OpenAI API.</li>
+<li><a href="https://platform.openai.com/tokenizer">OpenAI Tokenizer</a> - a utility from OpenAI to tokenize a given text prompt.</li>
+<li>:construction: <a href="https://github.com/click-contrib/click-man">click-man</a> - a library to create man pages for click applications.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="tests/" class="btn btn-neutral float-right" title="Tests">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/mgzwarrior/gait" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+      <span><a href="tests/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme_extra.js" defer></script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.4.3
+Build Date UTC : 2023-07-04 16:48:17.039088+00:00
+-->
