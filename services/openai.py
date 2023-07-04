@@ -126,9 +126,8 @@ class OpenAIService:
             )
         else:
             return self.__create_completion(
-                system_prompt="You are going to be given a git diff summarization and a new git diff. "
-                "Your task is to compare the two and produce a new summarization with a "
-                "limit of X words.",
+                system_prompt="You are going to be given a git diff. "
+                "Your task is to produce a summarization with a limit of X words.",
                 user_prompt="Summarize the following git diff within the <<< >>> below into X words."
                 f"<<<{chunk}>>>",
             )
