@@ -52,37 +52,31 @@ def commit(auto, verbose) -> None:
     message = json.dumps(models["choices"][0]["text"], indent=4)
 
     if auto:
-        print("Committing...")
-        try:
-            git_service.commit(message)
-        except GitException as exc:
-            logger.error(exc)
-            raise click.ClickException(str(exc))
+        __git_commit(git_service, message)
     else:
-        print(f"ChatGPT generated the following commit message: '{message}'")
+        print(f"ChatGPT gene rated the following commit message: '{message}'")
 
         print("Would you like to commit this message? [y/n/edit]")
 
         choice = input()
 
         if choice == "y":
-            print("Committing...")
-            try:
-                git_service.commit(message)
-            except GitException as exc:
-                logger.error(exc)
-                raise click.ClickException(str(exc))
+            __git_commit(git_service, message)
         elif choice == "edit":
             print("Please enter your commit message below:")
             user_commit_message = input()
-            print("Committing...")
-            try:
-                git_service.commit(user_commit_message)
-            except GitException as exc:
-                logger.error(exc)
-                raise click.ClickException(str(exc))
+            __git_commit(git_service, user_commit_message)
         else:
             print("Aborting...")
+
+
+def __git_commit(service: GitService, message: str) -> None:
+    print("Committing...")
+    try:
+        service.commit(message)
+    except GitException as exc:
+        logger.error(exc)
+        raise click.ClickException(str(exc))
 
 
 if __name__ == "__main__":
