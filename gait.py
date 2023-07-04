@@ -6,7 +6,7 @@ import click_config_file
 
 from services.exceptions import GitException, OpenAIException
 from services.git import GitService
-from services.gpt import OpenAIService
+from services.openai import OpenAIService
 
 logger = logging.getLogger("gait")
 logging.basicConfig(filename="gait.log", filemode="w", level=logging.DEBUG)
