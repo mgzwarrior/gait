@@ -39,3 +39,9 @@ This page is a dumping ground for any tests that you run and their results.  Ple
 
 *Note that the commit message is correct, but the finish_reason is length even though we are no where close to the token limit.  Need to research this further.*
 *Demo run through of the flow for [#8](https://github.com/mgzwarrior/gait/issues/8)*
+
+## Test Run 6
+
+![Test Run 6](img/test_6.png)
+
+*Demo run through of the flow for [#9](https://github.com/mgzwarrior/gait/issues/9)*
