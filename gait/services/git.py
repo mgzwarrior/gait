@@ -1,7 +1,7 @@
 import subprocess
 import uuid
 
-from services.exceptions import GitException
+from gait.services.exceptions import GitException
 
 
 class GitService:

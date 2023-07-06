@@ -1,3 +1,17 @@
+Metadata-Version: 2.1
+Name: gait
+Version: 0.1.0
+Summary: A git AI productivity tool
+Author-email: Matt Grant <mattgrant33@gmail.com>
+Project-URL: Homepage, https://github.com/mgzwarrior/gait
+Project-URL: Bug Tracker, https://github.com/mgzwarrior/gait/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./img/logo_dark.png">
   <img alt="Shows the gait logo in light mode and dark mode." src="./img/logo_light.png" width=50% height=50%>
@@ -122,38 +136,6 @@ When new libraries are added using pip, be sure to update the `requirements.txt`
 
 ```bash
 pip3 freeze > requirements.txt
-```
-
-### Packaging for Distribution
-
-When you are ready to distribute a new version of gait, run the following command:
-
-```bash
-python -m build
-```
-
-This will generate a `dist` folder containing a `.tar.gz` file and a `.whl` file.  These can be uploaded to PyPI using `twine`.  To install `twine`, run:
-
-```bash
-pip3 install twine
-```
-
-Then upload the files to PyPI Test using the following command:
-
-```bash
-twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-```
-
-Before uploading to PyPI for production, consider signing the distribution using GPG.  To do this, run the following command:
-
-```bash
-gpg --detach-sign -a dist/gait-0.0.1.tar.gz
-```
-
-This will generate a `.asc` file in the `dist` folder.  Upload this file to PyPI using the following command:
-
-```bash
-twine upload dist/*
 ```
 
 ### Linting

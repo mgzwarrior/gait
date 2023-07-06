@@ -1,19 +1,17 @@
 import json
 import logging
 import os
-import subprocess
 from getpass import getpass
-from pathlib import Path
 
 import click
 import click_config_file
 
-from services.exceptions import GitException, OpenAIException
-from services.git import GitService
-from services.openai import OpenAIService
+from gait.services.exceptions import GitException, OpenAIException
+from gait.services.git import GitService
+from gait.services.openai import OpenAIService
 
 logger = logging.getLogger("gait")
-logging.basicConfig(filename="gait.log", filemode="w", level=logging.DEBUG)
+logging.basicConfig(filename="../gait.log", filemode="w", level=logging.DEBUG)
 
 CONFIG_FILENAME = ".gaitconfig"
 

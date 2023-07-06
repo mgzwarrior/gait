@@ -1,0 +1,15 @@
+LICENSE
+pyproject.toml
+docs/README.md
+gait/__init__.py
+gait/gait.py
+gait.egg-info/PKG-INFO
+gait.egg-info/SOURCES.txt
+gait.egg-info/dependency_links.txt
+gait.egg-info/top_level.txt
+gait/services/__init__.py
+gait/services/exceptions.py
+gait/services/git.py
+gait/services/openai.py
+gait/tests/__init__.py
+gait/tests/test_gpt.py
