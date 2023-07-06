@@ -12,6 +12,14 @@ A git AI productivity tool.
 
 ## Installation
 
+### Production (Beta)
+
+```bash
+pip install --index-url https://test.pypi.org/simple/ src --user
+```
+
+### Development
+
 ```bash
 pyenv install
 
@@ -147,7 +155,7 @@ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 Before uploading to PyPI for production, consider signing the distribution using GPG.  To do this, run the following command:
 
 ```bash
-gpg --detach-sign -a dist/gait-0.0.1.tar.gz
+gpg --detach-sign -a dist/src-0.0.1.tar.gz
 ```
 
 This will generate a `.asc` file in the `dist` folder.  Upload this file to PyPI using the following command:

@@ -6,12 +6,12 @@ from getpass import getpass
 import click
 import click_config_file
 
-from gait.services.exceptions import GitException, OpenAIException
-from gait.services.git import GitService
-from gait.services.openai import OpenAIService
+from services.exceptions import GitException, OpenAIException
+from services.git import GitService
+from services.openai import OpenAIService
 
-logger = logging.getLogger("gait")
-logging.basicConfig(filename="../gait.log", filemode="w", level=logging.DEBUG)
+logger = logging.getLogger("src")
+logging.basicConfig(filename="../src.log", filemode="w", level=logging.DEBUG)
 
 CONFIG_FILENAME = ".gaitconfig"
 

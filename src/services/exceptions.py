@@ -1,4 +1,4 @@
-"""Custom exceptions for the gait module."""
+"""Custom exceptions for the src module."""
 
 
 class GitException(Exception):

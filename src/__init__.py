@@ -1,5 +1,5 @@
 """
-gait.
+src.
 
 A git AI productivity tool.
 """
