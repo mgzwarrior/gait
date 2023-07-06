@@ -6,8 +6,8 @@ import openai
 import tiktoken
 from openai.api_resources.abstract.engine_api_resource import EngineAPIResource
 
-from exceptions import OpenAIException
-from src.services.git import GitService
+from .exceptions import OpenAIException
+from .git import GitService
 
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md

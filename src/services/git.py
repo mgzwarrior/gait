@@ -1,7 +1,7 @@
 import subprocess
 import uuid
 
-from src.services.exceptions import GitException
+from .exceptions import GitException
 
 
 class GitService:
