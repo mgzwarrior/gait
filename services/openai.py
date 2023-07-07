@@ -44,10 +44,10 @@ class OpenAIService:
         self.__set_openai_completion_engine()
         self.__set_openai_api_key()
 
-    def create_pull_request_on_remote_push(self):
+    def generate_pull_request_description(self) -> str:
         pass
 
-    def generate_pull_request_description(self) -> str:
+    def generate_pull_request_title(self) -> str:
         pass
 
     def generate_commit_message(self, diff: str) -> str:

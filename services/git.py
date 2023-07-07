@@ -11,8 +11,7 @@ class GitService:
 
         try:
             # Disable for testing
-            # subprocess.run(cmd, shell=True, check=True)
-            pass
+            subprocess.run(cmd, shell=True, check=True)
         except subprocess.CalledProcessError as exc:
             raise GitException(exc) from exc
 
@@ -28,3 +27,13 @@ class GitService:
             raise GitException(exc) from exc
 
         return filename
+
+    @staticmethod
+    def push() -> None:
+        cmd = ["git push"]
+
+        try:
+            # Disable for testing
+            subprocess.run(cmd, shell=True, check=True)
+        except subprocess.CalledProcessError as exc:
+            raise GitException(exc) from exc

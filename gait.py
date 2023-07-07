@@ -7,8 +7,9 @@ from getpass import getpass
 import click
 import click_config_file
 
-from services.exceptions import GitException, OpenAIException
+from services.exceptions import GitException, OpenAIException, GitHubException
 from services.git import GitService
+from services.github import GitHubService
 from services.openai import OpenAIService
 
 logger = logging.getLogger("gait")
@@ -38,6 +39,8 @@ def commit(auto, verbose) -> None:
     The message is generated based on the diff of the current branch and the master branch.
     There are two modes for this command: interactive mode (default) and automatic mode.
     """
+    print("Beginning gait commit...")
+
     git_service = GitService()
     openai_service = OpenAIService()
 
@@ -82,6 +85,8 @@ def commit(auto, verbose) -> None:
         else:
             print("Aborting...")
 
+    print("Gait commit complete!")
+
 
 @gait.command()
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
@@ -113,6 +118,65 @@ def configure(verbose) -> None:
     print("Gait setup complete!")
 
 
+@gait.command()
+@click.option(
+    "--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True
+)
+@click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
+@click_config_file.configuration_option(
+    config_file_name=CONFIG_FILENAME
+)  # Note that this does not work implicitly
+def push(auto, verbose) -> None:
+    """This command is ued to push changes to the remote repository and create a pull request
+    with a title and description generated using ChatGPT.
+    The title and description are generated based on the commits being pushed to the remote.
+    There are two modes for this command: interactive mode (default) and automatic mode.
+    """
+    print("Beginning gait push...")
+
+    git_service = GitService()
+    openai_service = OpenAIService()
+    github_service = GitHubService()
+
+    if auto:
+        __git_push(git_service)
+        title = openai_service.generate_pull_request_title()
+        description = openai_service.generate_pull_request_description()
+        __gh_create_pull_request(github_service, title, description)
+    else:
+        # TODO: add check for uncommitted changes
+        # TODO: add commit info to printout
+        print("You have the following commits ready to push.  Continue? [y/n]")
+
+        choice = input()
+
+        if choice == "y":
+            __git_push(git_service)
+        else:
+            print("Aborting...")
+
+        title = openai_service.generate_pull_request_title()
+        description = openai_service.generate_pull_request_description()
+
+        print(f"ChatGPT generated the following pull request title: '{title}' and description: '{description}'")
+        print("Would you like to create pull request using this title and description? [y/n/edit]")
+
+        choice = input()
+
+        if choice == "y":
+            __gh_create_pull_request(github_service, title, description)
+        elif choice == "edit":
+            print("Please enter your pull request title below:")
+            user_title = input()
+            print("Please enter your pull request description below:")
+            user_description = input()
+            __gh_create_pull_request(github_service, user_title, user_description)
+        else:
+            print("Aborting...")
+
+    print("Gait push complete!")
+
+
 def __check_for_gh_cli() -> bool:
     print("Checking for GitHub CLI...")
     cmd = ["gh --version"]
@@ -128,11 +192,35 @@ def __check_for_gh_cli() -> bool:
     return True
 
 
+def __gh_create_pull_request(service: GitHubService, title: str, description: str) -> None:
+    print("Creating pull request using GitHub CLI...")
+
+    try:
+        service.create_pull_request(title, description)
+    except GitHubException as exc:
+        logger.error(exc)
+        raise click.ClickException(str(exc))
+
+    print("Pull request created!")
+
+
 def __git_commit(service: GitService, message: str) -> None:
     print("Committing...")
 
     try:
         service.commit(message)
+    except GitException as exc:
+        logger.error(exc)
+        raise click.ClickException(str(exc))
+
+    print("Commit successful!")
+
+
+def __git_push(service: GitService) -> None:
+    print("Pushing...")
+
+    try:
+        service.push()
     except GitException as exc:
         logger.error(exc)
         raise click.ClickException(str(exc))
