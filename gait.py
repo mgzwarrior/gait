@@ -3,7 +3,6 @@ import logging
 import os
 import subprocess
 from getpass import getpass
-from pathlib import Path
 
 import click
 import click_config_file
@@ -108,9 +107,25 @@ def configure(verbose) -> None:
 
         __test_openai_connection(verbose)
 
-    # TODO: Add git config verification
+    if not __check_for_gh_cli():
+        __install_gh_cli()
 
     print("Gait setup complete!")
+
+
+def __check_for_gh_cli() -> bool:
+    print("Checking for GitHub CLI...")
+    cmd = ["gh --version"]
+
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+    except subprocess.CalledProcessError as exc:
+        logger.error(exc)
+        return False
+
+    print("GitHub CLI found!")
+
+    return True
 
 
 def __git_commit(service: GitService, message: str) -> None:
@@ -123,7 +138,22 @@ def __git_commit(service: GitService, message: str) -> None:
         raise click.ClickException(str(exc))
 
 
+def __install_gh_cli() -> None:
+    print("Installing GitHub CLI...")
+    cmd = ["brew install gh"]
+
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+    except subprocess.CalledProcessError as exc:
+        logger.error(exc)
+        raise click.ClickException(str(exc))
+
+    print("GitHub CLI installed!")
+
+
 def __test_openai_connection(verbose: bool) -> None:
+    print("Testing OpenAI connection...")
+
     try:
         openai_service = OpenAIService()
         response = openai_service.test_connection()
