@@ -84,6 +84,7 @@ def commit(auto, verbose) -> None:
             __git_commit(git_service, user_commit_message)
         else:
             print("Aborting...")
+            return
 
     print("Gait commit complete!")
 
@@ -132,6 +133,7 @@ def push(auto, verbose) -> None:
     The title and description are generated based on the commits being pushed to the remote.
     There are two modes for this command: interactive mode (default) and automatic mode.
     """
+    # TODO: add verbose logging
     print("Beginning gait push...")
 
     git_service = GitService()
@@ -173,6 +175,7 @@ def push(auto, verbose) -> None:
             __gh_create_pull_request(github_service, user_title, user_description)
         else:
             print("Aborting...")
+            return
 
     print("Gait push complete!")
 

@@ -45,10 +45,12 @@ class OpenAIService:
         self.__set_openai_api_key()
 
     def generate_pull_request_description(self) -> str:
-        pass
+        # TODO: add OpenAI API call to generate description
+        return "This is a temporary description"
 
     def generate_pull_request_title(self) -> str:
-        pass
+        # TODO: add OpenAI API call to generate title
+        return "Temp Title"
 
     def generate_commit_message(self, diff: str) -> str:
         try:

@@ -9,6 +9,7 @@ class GitHubService:
         cmd = [f"gh pr create --title {title} --body {message}"]
 
         try:
+            # Disable for testing
             subprocess.run(cmd, shell=True, check=True)
         except subprocess.CalledProcessError as exc:
             raise GitHubException(exc) from exc
