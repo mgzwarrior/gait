@@ -74,7 +74,6 @@ def commit(auto, skip, track, verbose) -> None:
                         f"Generated commit message: {json.dumps(commit_message, indent=4)}"
                     )
 
-
                 logger.info(json.dumps(commit_message, indent=4))
         except OpenAIException as exc:
             logger.error(exc)
