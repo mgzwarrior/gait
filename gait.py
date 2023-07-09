@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import readline
 import subprocess
 from getpass import getpass
 
@@ -85,7 +86,7 @@ def commit(auto, skip, verbose) -> None:
             __git_commit(git_service, message)
         elif choice == "edit":
             print("Please enter your commit message below:")
-            user_commit_message = input()
+            user_commit_message = __rlinput(message)
             __git_commit(git_service, user_commit_message)
         else:
             print("Aborting...")
@@ -245,6 +246,14 @@ def __install_gh_cli() -> None:
         raise click.ClickException(str(exc))
 
     print("GitHub CLI installed!")
+
+
+def __rlinput(message: str) -> str:
+    readline.set_startup_hook(lambda: readline.insert_text(message))
+    try:
+        return input()
+    finally:
+        readline.set_startup_hook()
 
 
 def __test_openai_connection(verbose: bool) -> None:
