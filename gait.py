@@ -31,11 +31,12 @@ def gait() -> None:
     "--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True
 )
 @click.option("--skip", "-s", default=False, help="Skip OpenAI message generation.", is_flag=True)
+@click.option("--track", "-t", default=False, help="Track commit flow to train the OpenAI model", is_flag=True)
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
 @click_config_file.configuration_option(
     config_file_name=CONFIG_FILENAME
 )  # Note that this does not work implicitly
-def commit(auto, skip, verbose) -> None:
+def commit(auto, skip, track, verbose) -> None:
     """This command is ued to generate a commit message using ChatGPT.
     The message is generated based on the diff of the current branch and the master branch.
     There are two modes for this command: interactive mode (default) and automatic mode.
@@ -48,21 +49,31 @@ def commit(auto, skip, verbose) -> None:
 
     if not skip:
         try:
-            diff_fn = git_service.diff()
+            diff_or_diff_fn = git_service.diff(track)
         except GitException as exc:
             logger.error(exc)
             raise click.ClickException(str(exc))
 
         try:
-            with open(diff_fn, "r", encoding="utf-8") as diff_file:
-                diff = diff_file.read()
-                commit_message = json.loads(openai_service.generate_commit_message(diff))
+            if track:
+                with open(diff_or_diff_fn, "r", encoding="utf-8") as diff_file:
+                    diff = diff_file.read()
+                    commit_message = json.loads(openai_service.generate_commit_message(diff))
+
+                    if verbose:
+                        print(f"Diff: {diff}")
+                        print(
+                            f"Generated commit message: {json.dumps(commit_message, indent=4)}"
+                        )
+            else:
+                commit_message = json.loads(openai_service.generate_commit_message(diff_or_diff_fn))
 
                 if verbose:
-                    print(f"Diff: {diff}")
+                    print(f"Diff: {diff_or_diff_fn}")
                     print(
                         f"Generated commit message: {json.dumps(commit_message, indent=4)}"
                     )
+
 
                 logger.info(json.dumps(commit_message, indent=4))
         except OpenAIException as exc:
