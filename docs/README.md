@@ -107,6 +107,62 @@ ChatGPT full response:
 Committing...
 ```
 
+### Push
+    
+```commandline
+$ python3 gait.py push --help
+Usage: gait.py push [OPTIONS]
+
+  This command is ued to push changes to the remote repository and create a
+  pull request with a title and description generated using ChatGPT. The title
+  and description are generated based on the commits being pushed to the
+  remote. There are two modes for this command: interactive mode (default) and
+  automatic mode.
+
+Options:
+  -a, --auto     Automatic commit mode.
+  -v, --verbose  Verbose mode.
+  --config FILE  Read configuration from FILE.
+  --help         Show this message and exit.
+```
+
+#### Examples
+
+1. Use gait in interactive mode:
+
+```commandline
+$ python3 gait.py push
+Beginning gait push...
+You have the following commits ready to push.  Continue? [y/n]
+y
+Pushing...
+ChatGPT generated the following pull request title: 'Temp Title' and description: 'This is a temporary description'
+Would you like to create pull request using this title and description? [y/n/edit]
+n
+Aborting...
+```
+
+2. Use gait in automatic mode:
+
+```commandline
+$ python3 gait.py push -a
+Beginning gait push...
+Pushing...
+Creating pull request using GitHub CLI...
+Pull request created!
+Gait push complete!
+```
+
+3. Use gait in verbose mode:
+
+```commandline
+$ python3 gait.py push -a -v
+Beginning gait push...
+Pushing...
+Creating pull request using GitHub CLI...
+Pull request created!
+Gait push complete!
+```
 
 ## Development
 

@@ -44,11 +44,13 @@ class OpenAIService:
         self.__set_openai_completion_engine()
         self.__set_openai_api_key()
 
-    def create_pull_request_on_remote_push(self):
-        pass
-
     def generate_pull_request_description(self) -> str:
-        pass
+        # TODO: add OpenAI API call to generate description
+        return "This is a temporary description"
+
+    def generate_pull_request_title(self) -> str:
+        # TODO: add OpenAI API call to generate title
+        return "Temp Title"
 
     def generate_commit_message(self, diff: str) -> str:
         try:
