@@ -9,7 +9,7 @@ import click
 import click_config_file
 
 from constants import CONFIG_FILENAME, ENV_FILENAME, OPENAI_ENV_VARIABLE
-from services.exceptions import GitException, OpenAIException, GitHubException
+from services.exceptions import GitException, GitHubException, OpenAIException
 from services.git import GitService
 from services.github import GitHubService
 from services.openai import OpenAIService
@@ -30,8 +30,16 @@ def gait() -> None:
 @click.option(
     "--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True
 )
-@click.option("--skip", "-s", default=False, help="Skip OpenAI message generation.", is_flag=True)
-@click.option("--track", "-t", default=False, help="Track commit flow to train the OpenAI model", is_flag=True)
+@click.option(
+    "--skip", "-s", default=False, help="Skip OpenAI message generation.", is_flag=True
+)
+@click.option(
+    "--track",
+    "-t",
+    default=False,
+    help="Track commit flow to train the OpenAI model",
+    is_flag=True,
+)
 @click.option("--verbose", "-v", default=False, help="Verbose mode.", is_flag=True)
 @click_config_file.configuration_option(
     config_file_name=CONFIG_FILENAME
@@ -58,7 +66,9 @@ def commit(auto, skip, track, verbose) -> None:
             if track:
                 with open(diff_or_diff_fn, "r", encoding="utf-8") as diff_file:
                     diff = diff_file.read()
-                    commit_message = json.loads(openai_service.generate_commit_message(diff))
+                    commit_message = json.loads(
+                        openai_service.generate_commit_message(diff)
+                    )
 
                     if verbose:
                         print(f"Diff: {diff}")
@@ -66,7 +76,9 @@ def commit(auto, skip, track, verbose) -> None:
                             f"Generated commit message: {json.dumps(commit_message, indent=4)}"
                         )
             else:
-                commit_message = json.loads(openai_service.generate_commit_message(diff_or_diff_fn))
+                commit_message = json.loads(
+                    openai_service.generate_commit_message(diff_or_diff_fn)
+                )
 
                 if verbose:
                     print(f"Diff: {diff_or_diff_fn}")
@@ -119,8 +131,12 @@ def configure(verbose) -> None:
     if os.getenv("OPENAI_API_KEY"):
         __test_openai_connection(verbose)
     else:
-        print("In order to use Gait, you must setup an OpenAI API key for your account.")
-        print("Navigating to https://platform.openai.com/account/api-keys to create a new key.")
+        print(
+            "In order to use Gait, you must setup an OpenAI API key for your account."
+        )
+        print(
+            "Navigating to https://platform.openai.com/account/api-keys to create a new key."
+        )
 
         key = getpass(prompt="Please enter your OpenAI API Key: ")
 
@@ -176,8 +192,12 @@ def push(auto, verbose) -> None:
         title = openai_service.generate_pull_request_title()
         description = openai_service.generate_pull_request_description()
 
-        print(f"ChatGPT generated the following pull request title: '{title}' and description: '{description}'")
-        print("Would you like to create pull request using this title and description? [y/n/edit]")
+        print(
+            f"ChatGPT generated the following pull request title: '{title}' and description: '{description}'"
+        )
+        print(
+            "Would you like to create pull request using this title and description? [y/n/edit]"
+        )
 
         choice = input()
 
@@ -211,7 +231,9 @@ def __check_for_gh_cli() -> bool:
     return True
 
 
-def __gh_create_pull_request(service: GitHubService, title: str, description: str) -> None:
+def __gh_create_pull_request(
+    service: GitHubService, title: str, description: str
+) -> None:
     print("Creating pull request using GitHub CLI...")
 
     try:

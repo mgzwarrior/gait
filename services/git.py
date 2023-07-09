@@ -9,7 +9,9 @@ class GitService:
     def commit(message: str) -> None:
         try:
             # Disable for testing
-            subprocess.run(f"git add . ; git commit -m '{message}'", shell=True, check=True)
+            subprocess.run(
+                f"git add . ; git commit -m '{message}'", shell=True, check=True
+            )
         except subprocess.CalledProcessError as exc:
             raise GitException(exc) from exc
 
@@ -23,7 +25,11 @@ class GitService:
                 if track:
                     subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
                 else:
-                    return str(subprocess.run(cmd, shell=True, capture_output=True, check=True).stdout)
+                    return str(
+                        subprocess.run(
+                            cmd, shell=True, capture_output=True, check=True
+                        ).stdout
+                    )
         except subprocess.CalledProcessError as exc:
             raise GitException(exc) from exc
 

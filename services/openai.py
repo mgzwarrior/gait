@@ -37,9 +37,7 @@ class OpenAIService:
     API_TOKEN_LIMIT_PER_REQUEST = 1000
 
     def __init__(
-        self,
-        model: str = DEFAULT_MODEL,
-        temperature: float = DEFAULT_TEMPERATURE
+        self, model: str = DEFAULT_MODEL, temperature: float = DEFAULT_TEMPERATURE
     ):
         self.model = model
         self.temperature = temperature
