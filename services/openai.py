@@ -1,4 +1,5 @@
 import os
+import subprocess
 import textwrap
 from typing import Optional, Type
 
@@ -45,6 +46,8 @@ class OpenAIService:
         self.__set_openai_completion_engine()
         self.__set_openai_api_key()
 
+        if not os.path.exists(ENV_FILENAME):
+            subprocess.run(f"touch {ENV_FILENAME}", shell=True, check=True)
         openai.api_key_path = ENV_FILENAME
 
     def generate_pull_request_description(self) -> str:
