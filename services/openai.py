@@ -6,6 +6,7 @@ import openai
 import tiktoken
 from openai.api_resources.abstract.engine_api_resource import EngineAPIResource
 
+from constants import ENV_FILENAME
 from services.exceptions import OpenAIException
 from services.git import GitService
 
@@ -43,6 +44,8 @@ class OpenAIService:
         self.temperature = temperature
         self.__set_openai_completion_engine()
         self.__set_openai_api_key()
+
+        openai.api_key_path = ENV_FILENAME
 
     def generate_pull_request_description(self) -> str:
         # TODO: add OpenAI API call to generate description

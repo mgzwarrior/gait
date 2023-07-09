@@ -1,0 +1,79 @@
+diff --git a/.gitignore b/.gitignore
+index c28781e..9c3cac4 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -5,3 +5,4 @@ gait.log
+ diff.txt
+ commit_message.txt
+ venv
++.env
+diff --git a/gait.py b/gait.py
+index c17fc0e..d858b6d 100644
+--- a/gait.py
++++ b/gait.py
+@@ -7,6 +7,7 @@ from getpass import getpass
+ import click
+ import click_config_file
+ 
++from constants import CONFIG_FILENAME, ENV_FILENAME, OPENAI_ENV_VARIABLE
+ from services.exceptions import GitException, OpenAIException, GitHubException
+ from services.git import GitService
+ from services.github import GitHubService
+@@ -15,8 +16,6 @@ from services.openai import OpenAIService
+ logger = logging.getLogger("gait")
+ logging.basicConfig(filename="gait.log", filemode="w", level=logging.DEBUG)
+ 
+-CONFIG_FILENAME = ".gaitconfig"
+-
+ 
+ @click.group()
+ def gait() -> None:
+@@ -108,8 +107,8 @@ def configure(verbose) -> None:
+ 
+         key = getpass(prompt="Please enter your OpenAI API Key: ")
+ 
+-        # TODO: fix this part since env var does not persist
+-        os.environ["OPENAI_API_KEY"] = key
++        with open(ENV_FILENAME, "w") as env_file:
++            env_file.write(f"{key}\n")
+ 
+         __test_openai_connection(verbose)
+ 
+diff --git a/services/git.py b/services/git.py
+index 6f45d75..890654b 100644
+--- a/services/git.py
++++ b/services/git.py
+@@ -7,11 +7,9 @@ from services.exceptions import GitException
+ class GitService:
+     @staticmethod
+     def commit(message: str) -> None:
+-        cmd = ["git commit -m", message]
+-
+         try:
+             # Disable for testing
+-            subprocess.run(cmd, shell=True, check=True)
++            subprocess.run(f"git add . ; git commit -m '{message}'", shell=True, check=True)
+         except subprocess.CalledProcessError as exc:
+             raise GitException(exc) from exc
+ 
+diff --git a/services/openai.py b/services/openai.py
+index f42f27c..bcf3a05 100644
+--- a/services/openai.py
++++ b/services/openai.py
+@@ -6,6 +6,7 @@ import openai
+ import tiktoken
+ from openai.api_resources.abstract.engine_api_resource import EngineAPIResource
+ 
++from constants import ENV_FILENAME
+ from services.exceptions import OpenAIException
+ from services.git import GitService
+ 
+@@ -44,6 +45,8 @@ class OpenAIService:
+         self.__set_openai_completion_engine()
+         self.__set_openai_api_key()
+ 
++        openai.api_key_path = ENV_FILENAME
++
+     def generate_pull_request_description(self) -> str:
+         # TODO: add OpenAI API call to generate description
+         return "This is a temporary description"

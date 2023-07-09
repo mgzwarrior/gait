@@ -7,11 +7,9 @@ from services.exceptions import GitException
 class GitService:
     @staticmethod
     def commit(message: str) -> None:
-        cmd = ["git commit -m", message]
-
         try:
             # Disable for testing
-            subprocess.run(cmd, shell=True, check=True)
+            subprocess.run(f"git add . ; git commit -m '{message}'", shell=True, check=True)
         except subprocess.CalledProcessError as exc:
             raise GitException(exc) from exc
 

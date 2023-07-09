@@ -5,3 +5,4 @@ gait.log
 diff.txt
 commit_message.txt
 venv
+.env

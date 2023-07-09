@@ -7,6 +7,7 @@ from getpass import getpass
 import click
 import click_config_file
 
+from constants import CONFIG_FILENAME, ENV_FILENAME, OPENAI_ENV_VARIABLE
 from services.exceptions import GitException, OpenAIException, GitHubException
 from services.git import GitService
 from services.github import GitHubService
@@ -14,8 +15,6 @@ from services.openai import OpenAIService
 
 logger = logging.getLogger("gait")
 logging.basicConfig(filename="gait.log", filemode="w", level=logging.DEBUG)
-
-CONFIG_FILENAME = ".gaitconfig"
 
 
 @click.group()
@@ -108,8 +107,8 @@ def configure(verbose) -> None:
 
         key = getpass(prompt="Please enter your OpenAI API Key: ")
 
-        # TODO: fix this part since env var does not persist
-        os.environ["OPENAI_API_KEY"] = key
+        with open(ENV_FILENAME, "w") as env_file:
+            env_file.write(f"{key}\n")
 
         __test_openai_connection(verbose)
 
