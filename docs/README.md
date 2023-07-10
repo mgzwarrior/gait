@@ -45,27 +45,52 @@ Run `source ~/.zshrc` in an open terminal window or open a new one and verify by
 ## Usage
 
 ```commandline
-$ python3 gait.py --help
 Usage: gait.py [OPTIONS] COMMAND [ARGS]...
+
+  Gait is a CLI tool that uses OpenAI's ChatGPT to generate commit messages.
+  It is designed to be used with Git.
 
 Options:
   --help  Show this message and exit.
 
 Commands:
-  commit
+  commit     This command is ued to generate a commit message using ChatGPT.
+  configure  This command is used to configure Gait.
+  push       This command is ued to push changes to the remote repository...
+```
+
+### Configure
+
+```commandline
+Usage: gait.py configure [OPTIONS]
+
+  This command is used to configure Gait. If required, it will prompt the user
+  for their OpenAI API key and test the connection.
+
+Options:
+  -v, --verbose  Verbose mode.
+  --config FILE  Read configuration from FILE.
+  --help         Show this message and exit.
 ```
 
 ### Commit
 
 ```commandline
-$ python3 gait.py commit --help
 Usage: gait.py commit [OPTIONS]
 
+  This command is ued to generate a commit message using ChatGPT. The message
+  is generated based on the diff of the current branch and the master branch.
+  There are two modes for this command: interactive mode (default) and
+  automatic mode.
+
 Options:
-  -a, --auto     Automatic commit mode.
-  -v, --verbose  Verbose mode.
-  --config FILE  Read configuration from FILE.
-  --help         Show this message and exit.
+  -a, --auto          Automatic commit mode.
+  -m, --message TEXT  Commit message.
+  -s, --skip          Skip OpenAI message generation.
+  -t, --track         Track commit flow to train the OpenAI model
+  -v, --verbose       Verbose mode.
+  --config FILE       Read configuration from FILE.
+  --help              Show this message and exit.
 ```
 
 #### Examples
@@ -80,14 +105,32 @@ n
 Aborting...
 ```
 
-2. Use gait in automatic mode:
+2. Use gait in interactive mode, but skip OpenAI message generation:
+
+```commandline
+$ python3 gait.py commit -s
+Beginning gait commit...
+Please enter your commit message below:
+
+```
+
+3. Use gait in interactive mode, but provide a commit message manually:
+
+```commandline
+$ python3 gait.py commit -m 'My commit message' # Note that this will automatically skip OpenAI message generation
+Beginning gait commit...
+Please enter your commit message below:
+
+```
+
+4. Use gait in automatic mode:
 
 ```commandline
 $ python3 gait.py commit -a
 Committing...
 ```
 
-3. Use gait in verbose mode:
+5. Use gait in verbose mode:
 
 ```commandline
 $ python3 gait.py commit -a -v
@@ -115,6 +158,62 @@ ChatGPT full response:
 Committing...
 ```
 
+### Push
+    
+```commandline
+$ python3 gait.py push --help
+Usage: gait.py push [OPTIONS]
+
+  This command is ued to push changes to the remote repository and create a
+  pull request with a title and description generated using ChatGPT. The title
+  and description are generated based on the commits being pushed to the
+  remote. There are two modes for this command: interactive mode (default) and
+  automatic mode.
+
+Options:
+  -a, --auto     Automatic commit mode.
+  -v, --verbose  Verbose mode.
+  --config FILE  Read configuration from FILE.
+  --help         Show this message and exit.
+```
+
+#### Examples
+
+1. Use gait in interactive mode:
+
+```commandline
+$ python3 gait.py push
+Beginning gait push...
+You have the following commits ready to push.  Continue? [y/n]
+y
+Pushing...
+ChatGPT generated the following pull request title: 'Temp Title' and description: 'This is a temporary description'
+Would you like to create pull request using this title and description? [y/n/edit]
+n
+Aborting...
+```
+
+2. Use gait in automatic mode:
+
+```commandline
+$ python3 gait.py push -a
+Beginning gait push...
+Pushing...
+Creating pull request using GitHub CLI...
+Pull request created!
+Gait push complete!
+```
+
+3. Use gait in verbose mode:
+
+```commandline
+$ python3 gait.py push -a -v
+Beginning gait push...
+Pushing...
+Creating pull request using GitHub CLI...
+Pull request created!
+Gait push complete!
+```
 
 ## Development
 
@@ -180,8 +279,16 @@ Use the `/docs` folder for documentation.
 
 Docs can be served locally using mkdocs with the following command:
 
-```bash
+```commandline
 mkdocs serve
+```
+
+### Training Data
+
+When developing in the gait project, we sometimes want to generate training data from using the gait CLI.  To do this, we can use the `--track` flag when running the `commit` command like so:
+
+```commandline
+python3 gait.py commit -t
 ```
 
 ## Resources

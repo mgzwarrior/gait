@@ -1,4 +1,5 @@
 import os
+import subprocess
 import textwrap
 from typing import Optional, Type
 
@@ -8,6 +9,8 @@ from openai.api_resources.abstract.engine_api_resource import EngineAPIResource
 
 from .exceptions import OpenAIException
 from .git import GitService
+
+from .constants import ENV_FILENAME
 
 SAMPLE_DIFF = """
 diff --git a/README.md b/README.md
@@ -35,20 +38,24 @@ class OpenAIService:
     API_TOKEN_LIMIT_PER_REQUEST = 1000
 
     def __init__(
-        self,
-        model: str = DEFAULT_MODEL,
-        temperature: float = DEFAULT_TEMPERATURE
+        self, model: str = DEFAULT_MODEL, temperature: float = DEFAULT_TEMPERATURE
     ):
         self.model = model
         self.temperature = temperature
         self.__set_openai_completion_engine()
         self.__set_openai_api_key()
 
-    def create_pull_request_on_remote_push(self):
-        pass
+        if not os.path.exists(ENV_FILENAME):
+            subprocess.run(f"touch {ENV_FILENAME}", shell=True, check=True)
+        openai.api_key_path = ENV_FILENAME
 
     def generate_pull_request_description(self) -> str:
-        pass
+        # TODO: add OpenAI API call to generate description
+        return "This is a temporary description"
+
+    def generate_pull_request_title(self) -> str:
+        # TODO: add OpenAI API call to generate title
+        return "Temp Title"
 
     def generate_commit_message(self, diff: str) -> str:
         try:
