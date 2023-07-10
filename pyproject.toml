@@ -3,6 +3,7 @@ name = "gait"
 dynamic = ["version"]
 authors = [
   { name="Matt Grant", email="mattgrant33@gmail.com" },
+  { name="Brandon Powers", email="brandonkpowers@gmail.com" },
 ]
 description = "A git AI productivity tool"
 readme = "docs/README.md"
