@@ -30,6 +30,7 @@ def gait() -> None:
 @click.option(
     "--auto", "-a", default=False, help="Automatic commit mode.", is_flag=True
 )
+@click.option("--message", "-m", default="", help="Commit message.")
 @click.option(
     "--skip", "-s", default=False, help="Skip OpenAI message generation.", is_flag=True
 )
@@ -44,7 +45,7 @@ def gait() -> None:
 @click_config_file.configuration_option(
     config_file_name=CONFIG_FILENAME
 )  # Note that this does not work implicitly
-def commit(auto, skip, track, verbose) -> None:
+def commit(auto, message, skip, track, verbose) -> None:
     """This command is ued to generate a commit message using ChatGPT.
     The message is generated based on the diff of the current branch and the master branch.
     There are two modes for this command: interactive mode (default) and automatic mode.
@@ -53,7 +54,9 @@ def commit(auto, skip, track, verbose) -> None:
 
     git_service = GitService()
     openai_service = OpenAIService()
-    message = ""
+
+    if message != "":
+        skip = True
 
     if not skip:
         try:
