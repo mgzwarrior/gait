@@ -14,7 +14,10 @@ from services.git import GitService
 from services.github import GitHubService
 from services.openai import OpenAIService
 
-logger = logging.getLogger("src")
+from services.constants import GAIT_LOGNAME. # GAIT_LOGNAME = "src" in `constants.py`
+
+logger = logging.getLogger(GAIT_LOGNAME}
+logging.basicConfig(filename=f"../{GAIT_LOGNAME}.log", filemode="w", level=logging.DEBUG)
 logging.basicConfig(filename="../src.log", filemode="w", level=logging.DEBUG)
 
 
