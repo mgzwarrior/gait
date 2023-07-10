@@ -1,3 +1,4 @@
 ENV_FILENAME = "../../.env"
 CONFIG_FILENAME = "../.gaitconfig"
 OPENAI_ENV_VARIABLE = "OPENAI_API_KEY"
+GAIT_LOGNAME = "src"

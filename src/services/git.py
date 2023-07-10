@@ -24,7 +24,9 @@ class GitService:
         filename = f"src/diffs/diff-{uuid.uuid1()}.txt"
 
         try:
-            with open(os.path.join(cur_path, filename), "w", encoding="utf-8") as diff_file:
+            with open(
+                os.path.join(cur_path, filename), "w", encoding="utf-8"
+            ) as diff_file:
                 subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
             with open(filename, "w", encoding="utf-8") as diff_file:
                 if track:

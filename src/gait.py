@@ -8,17 +8,16 @@ from getpass import getpass
 import click
 import click_config_file
 
-from services.constants import CONFIG_FILENAME, ENV_FILENAME
+from services.constants import CONFIG_FILENAME, ENV_FILENAME, GAIT_LOGNAME
 from services.exceptions import GitException, GitHubException, OpenAIException
 from services.git import GitService
 from services.github import GitHubService
 from services.openai import OpenAIService
 
-from services.constants import GAIT_LOGNAME. # GAIT_LOGNAME = "src" in `constants.py`
-
-logger = logging.getLogger(GAIT_LOGNAME}
-logging.basicConfig(filename=f"../{GAIT_LOGNAME}.log", filemode="w", level=logging.DEBUG)
-logging.basicConfig(filename="../src.log", filemode="w", level=logging.DEBUG)
+logger = logging.getLogger(GAIT_LOGNAME)
+logging.basicConfig(
+    filename=f"../{GAIT_LOGNAME}.log", filemode="w", level=logging.DEBUG
+)
 
 
 @click.group()
