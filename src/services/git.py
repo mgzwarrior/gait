@@ -1,7 +1,9 @@
+import os
 import subprocess
 import uuid
+from pathlib import Path
 
-from services.exceptions import GitException
+from .exceptions import GitException
 
 
 class GitService:
@@ -18,9 +20,12 @@ class GitService:
     @staticmethod
     def diff(track: bool) -> str:
         cmd = ["git --no-pager diff"]
-        filename = f"diffs/diff-{uuid.uuid1()}.txt"
+        cur_path = os.path.abspath(os.curdir)
+        filename = f"src/diffs/diff-{uuid.uuid1()}.txt"
 
         try:
+            with open(os.path.join(cur_path, filename), "w", encoding="utf-8") as diff_file:
+                subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
             with open(filename, "w", encoding="utf-8") as diff_file:
                 if track:
                     subprocess.run(cmd, stdout=diff_file, shell=True, check=True)

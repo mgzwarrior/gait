@@ -1,0 +1,26 @@
+[project]
+name = "gait"
+dynamic = ["version"]
+authors = [
+  { name="Matt Grant", email="mattgrant33@gmail.com" },
+  { name="Brandon Powers", email="brandonkpowers@gmail.com" },
+]
+description = "A git AI productivity tool"
+readme = "docs/README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/mgzwarrior/gait"
+"Bug Tracker" = "https://github.com/mgzwarrior/gait/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "gait.__version__"}

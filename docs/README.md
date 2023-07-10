@@ -12,6 +12,14 @@ A git AI productivity tool.
 
 ## Installation
 
+### Production (Beta)
+
+```bash
+pip install --index-url https://test.pypi.org/simple/ src --user
+```
+
+### Development
+
 ```bash
 pyenv install
 
@@ -221,6 +229,38 @@ When new libraries are added using pip, be sure to update the `requirements.txt`
 
 ```bash
 pip3 freeze > requirements.txt
+```
+
+### Packaging for Distribution
+
+When you are ready to distribute a new version of gait, run the following command:
+
+```bash
+python -m build
+```
+
+This will generate a `dist` folder containing a `.tar.gz` file and a `.whl` file.  These can be uploaded to PyPI using `twine`.  To install `twine`, run:
+
+```bash
+pip3 install twine
+```
+
+Then upload the files to PyPI Test using the following command:
+
+```bash
+twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+```
+
+Before uploading to PyPI for production, consider signing the distribution using GPG.  To do this, run the following command:
+
+```bash
+gpg --detach-sign -a dist/src-0.0.1.tar.gz
+```
+
+This will generate a `.asc` file in the `dist` folder.  Upload this file to PyPI using the following command:
+
+```bash
+twine upload dist/*
 ```
 
 ### Linting

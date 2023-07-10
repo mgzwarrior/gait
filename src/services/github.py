@@ -1,6 +1,6 @@
 import subprocess
 
-from services.exceptions import GitHubException
+from .exceptions import GitHubException
 
 
 class GitHubService:

@@ -6,3 +6,10 @@ diff.txt
 commit_message.txt
 venv
 .env
+
+# Distribution / packaging
+/build/
+/dist/
+*.egg
+*.eggs
+*.egg-info/
