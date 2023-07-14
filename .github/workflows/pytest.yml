@@ -31,7 +31,7 @@ jobs:
         hide-report: false
         create-new-comment: false
         hide-comment: false
-        report-only-changed-files: true
+        report-only-changed-files: false
         remove-link-from-badge: false
         unique-id-for-comment: python3.8
         junitxml-path: ./pytest.xml
