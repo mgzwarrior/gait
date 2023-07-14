@@ -9,6 +9,7 @@ venv
 
 # Pytest
 .coverage
+coverage.xml
 pytest.xml
 pytest-coverage.txt
 
