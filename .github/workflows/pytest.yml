@@ -34,5 +34,5 @@ jobs:
         report-only-changed-files: true
         remove-link-from-badge: false
         unique-id-for-comment: python3.8
-        junitxml-path: ./path-to-file/pytest.xml
-        junitxml-title: My JUnit Xml Summary Title
+        junitxml-path: ./pytest.xml
+        junitxml-title: JUnit Xml Summary Title
