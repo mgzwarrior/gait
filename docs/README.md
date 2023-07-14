@@ -275,10 +275,10 @@ This is also run automatically as a GitHub Workflow for all pushes to the `main`
 
 ### Testing
 
-Run the unit tests using the following command:
+Run the unit tests with coverage using the following command:
 
 ```bash
-pytest
+pytest --cache-clear --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=src tests/ > pytest-coverage.txt
 ```
 
 ### Documentation
