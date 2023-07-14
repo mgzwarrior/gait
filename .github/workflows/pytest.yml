@@ -23,8 +23,8 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest
       run: |
-        pytest --cache-clear --junitxml=pytest.xml --cov-report=term-missing:skip-covered\
-        --cov=src tests/ > pytest-coverage.txt
+        pytest --cache-clear --junitxml=pytest.xml --cov-report=term-missing:skip-covered \
+          --cov=src tests/ > pytest-coverage.txt
     - name: Pytest coverage comment
       uses: MishaKav/pytest-coverage-comment@main
       with:
