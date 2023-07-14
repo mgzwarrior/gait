@@ -273,6 +273,14 @@ pylint $(git ls-files '*.py')
 
 This is also run automatically as a GitHub Workflow for all pushes to the `main` branch.
 
+### Testing
+
+Run the unit tests using the following command:
+
+```bash
+pytest
+```
+
 ### Documentation
 
 Use the `/docs` folder for documentation.
