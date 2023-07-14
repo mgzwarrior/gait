@@ -8,11 +8,11 @@ from getpass import getpass
 import click
 import click_config_file
 
-from src.services.constants import CONFIG_FILENAME, ENV_FILENAME, GAIT_LOGNAME
-from src.services.exceptions import GitException, GitHubException, OpenAIException
-from src.services.git import GitService
-from src.services.github import GitHubService
-from src.services.openai import OpenAIService
+from services.constants import CONFIG_FILENAME, ENV_FILENAME, GAIT_LOGNAME
+from services.exceptions import GitException, GitHubException, OpenAIException
+from services.git import GitService
+from services.github import GitHubService
+from services.openai import OpenAIService
 
 logger = logging.getLogger(GAIT_LOGNAME)
 logging.basicConfig(
@@ -25,7 +25,7 @@ def gait() -> None:
     """Gait is a CLI tool that uses OpenAI's ChatGPT to generate commit messages.
     It is designed to be used with Git.
     """
-    return None
+    print("Welcome to Gait!")
 
 
 @gait.command()
