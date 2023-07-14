@@ -24,7 +24,19 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cache-clear --cov=src tests/ > pytest-coverage.txt
-    - name: Comment coverage
-      uses: coroo/pytest-coverage-commentator@v1.0.2
+    - name: Pytest coverage comment
+      uses: MishaKav/pytest-coverage-comment@main
       with:
-        pytest-coverage: pytest-coverage.txt
+        pytest-coverage-path: ./pytest-coverage.txt
+        pytest-xml-coverage-path: ./coverage.xml
+        title: gait Coverage Report
+        badge-title: gait Coverage Report
+        hide-badge: false
+        hide-report: false
+        create-new-comment: false
+        hide-comment: false
+        report-only-changed-files: false
+        remove-link-from-badge: false
+        unique-id-for-comment: python3.8
+        junitxml-path: ./pytest.xml
+        junitxml-title: gait Test Summary
