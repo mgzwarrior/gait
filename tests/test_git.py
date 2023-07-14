@@ -3,6 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+from src.services.exceptions import GitException
 from src.services.git import GitService
 
 
@@ -30,6 +31,5 @@ class TestGit:
     @pytest.mark.unit
     @patch("src.services.git.subprocess.run", side_effect=CalledProcessError(returncode=1, cmd="some error"))
     def test_git_diff_throws_exception(self, mock_run):
-        with pytest.raises(Exception) as exc:
+        with pytest.raises(GitException):
             GitService().diff(track=False)
-            assert "some error" in str(exc.value)

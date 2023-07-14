@@ -1,5 +1,4 @@
 import os
-import subprocess
 import textwrap
 from typing import Optional, Type
 
@@ -7,7 +6,6 @@ import openai
 import tiktoken
 from openai.api_resources.abstract.engine_api_resource import EngineAPIResource
 
-from .constants import ENV_FILENAME
 from .exceptions import OpenAIException
 from .git import GitService
 
