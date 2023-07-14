@@ -1,5 +1,4 @@
 import os
-import subprocess
 import textwrap
 from typing import Optional, Type
 
@@ -7,7 +6,6 @@ import openai
 import tiktoken
 from openai.api_resources.abstract.engine_api_resource import EngineAPIResource
 
-from .constants import ENV_FILENAME
 from .exceptions import OpenAIException
 from .git import GitService
 
@@ -44,9 +42,10 @@ class OpenAIService:
         self.__set_openai_completion_engine()
         self.__set_openai_api_key()
 
-        if not os.path.exists(ENV_FILENAME):
-            subprocess.run(f"touch {ENV_FILENAME}", shell=True, check=True)
-        openai.api_key_path = ENV_FILENAME
+        # TODO: retest gait configure command and add this back if needed
+        # if not os.path.exists(ENV_FILENAME):
+        #     subprocess.run(f"touch {ENV_FILENAME}", shell=True, check=True)
+        # openai.api_key_path = ENV_FILENAME
 
     def generate_pull_request_description(self) -> str:
         # TODO: add OpenAI API call to generate description

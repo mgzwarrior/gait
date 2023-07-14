@@ -7,6 +7,11 @@ commit_message.txt
 venv
 .env
 
+# Pytest
+.coverage
+pytest.xml
+pytest-coverage.txt
+
 # Distribution / packaging
 /build/
 /dist/

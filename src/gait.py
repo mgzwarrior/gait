@@ -25,7 +25,7 @@ def gait() -> None:
     """Gait is a CLI tool that uses OpenAI's ChatGPT to generate commit messages.
     It is designed to be used with Git.
     """
-    return None
+    print("Welcome to Gait!")
 
 
 @gait.command()
