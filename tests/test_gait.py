@@ -1,7 +1,4 @@
 import pytest as pytest
-from click.testing import CliRunner
-
-from src.gait import gait
 
 
 class TestGait:
