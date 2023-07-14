@@ -20,6 +20,6 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest
       run: |
-        pytest --cache-clear --cov=app test/ > pytest-coverage.txt
+        pytest --cache-clear --cov=app src/test/ > pytest-coverage.txt
     - name: Comment coverage
       uses: coroo/pytest-coverage-commentator@v1.0.2
