@@ -24,19 +24,15 @@ class GitService:
         filename = f"src/diffs/diff-{uuid.uuid1()}.txt"
 
         try:
-            with open(
-                os.path.join(cur_path, filename), "w", encoding="utf-8"
-            ) as diff_file:
-                subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
-            with open(filename, "w", encoding="utf-8") as diff_file:
-                if track:
+            if track:
+                with open(os.path.join(cur_path, filename), "w", encoding="utf-8") as diff_file:
                     subprocess.run(cmd, stdout=diff_file, shell=True, check=True)
-                else:
-                    return str(
-                        subprocess.run(
-                            cmd, shell=True, capture_output=True, check=True
-                        ).stdout
-                    )
+            else:
+                data = subprocess.run(
+                    cmd, shell=True, stdout=subprocess.PIPE, check=True
+                )
+                result = data.stdout.decode("utf-8")
+                return result
         except subprocess.CalledProcessError as exc:
             raise GitException(exc) from exc
 
