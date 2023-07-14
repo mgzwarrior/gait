@@ -29,7 +29,6 @@ jobs:
       uses: MishaKav/pytest-coverage-comment@main
       with:
         pytest-coverage-path: ./pytest-coverage.txt
-        pytest-xml-coverage-path: ./coverage.xml
         title: gait Coverage Report
         badge-title: gait Coverage Report
         hide-badge: false
